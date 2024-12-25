@@ -1,0 +1,10 @@
+
+### `CHANGELOG.md`
+
+```markdown
+# Changelog
+
+## [0.0.1] - 2024-10-29
+- Initial release of `best_theme_annotation`.
+- Added `BestTheme` annotation to define color variables.
+- Supports light and dark mode color settings.

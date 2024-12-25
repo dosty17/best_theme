@@ -1,0 +1,28 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    # Enable public member documentation
+    - public_member_api_docs
+    # Avoid empty statements
+    - avoid_empty_else
+    # Use braces for all control structures
+    - curly_braces_in_flow_control_structures
+    # Enforce consistent use of `final` for variables
+    - prefer_final_locals
+    # Avoid using `var` when a type is more appropriate
+    - always_specify_types
+    # Prefer using `const` for constructors
+    - prefer_const_constructors
+    # Avoid prints in production code
+    - avoid_print
+    # Prefer single quotes for strings
+    - prefer_single_quotes
+
+analyzer:
+  errors:
+    # Treat missing docs as a warning instead of an error
+    public_member_api_docs: warning
+  exclude:
+    - build/**
+    - "**/*.g.dart"

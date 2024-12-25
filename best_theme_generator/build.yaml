@@ -1,0 +1,16 @@
+targets:
+  $default:
+    builders:
+      # best_theme_generator|best_theme_annotation:
+      generators|annotations:
+        enabled: true
+
+builders:
+  generators:
+    target: ":best_theme_generator"
+    import: "package:best_theme_generator/best_theme_generator.dart"
+    builder_factories: ["bestThemeGenerate"] # Builder name(BuilderOption) this is a definition
+    build_extensions: { ".dart": [".g.part"] }
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]

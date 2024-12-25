@@ -1,0 +1,10 @@
+
+### `CHANGELOG.md`
+
+```markdown
+# Changelog
+
+## [0.0.1] - 2024-10-29
+- Initial release of `best_theme_generator`.
+- Added code generation for `BestTheme` annotation to define theme color variables.
+- Supports light and dark mode color generation.
