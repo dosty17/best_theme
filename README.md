@@ -245,7 +245,7 @@ mytheme.BestTheme(
     context: context,
     useRouterConfig: true,
     //...
-  )
+  );
 ```
 example:
 ```dart
