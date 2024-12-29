@@ -16,7 +16,7 @@ dependencies:
   #   path: ../best_theme/
   # best_theme_annotation:
   #   path: ../best_theme_annotation/
-  best_theme: ^0.0.1
+  best_theme: ^0.0.2
   best_theme_annotation: ^0.0.1
   analyzer: ^6.7.0
 
