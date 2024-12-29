@@ -239,7 +239,6 @@ Container(
 
 10. **You can use go router**
 set useRouterConfig to true in mytheme.BestTheme() Widget :
-<br>
   mytheme.BestTheme(
     context: context,
     useRouterConfig: true,
