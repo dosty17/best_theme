@@ -238,46 +238,12 @@ Container(
 <br>
 
 10. **You can use go router**
-<br>
-in first set useRouterConfig to true:
-```
-mytheme.BestTheme(
+set useRouterConfig to true in mytheme.BestTheme() Widget :
+  mytheme.BestTheme(
     context: context,
     useRouterConfig: true,
-    ...
-  )
-```
-example:
-```dart
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return mytheme.BestTheme(
-        context: context,
-        useRouterConfig: true,
-        materialApp: MaterialApp.router(
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            useMaterial3: true,
-          ),
-          routerConfig: GoRouter(routes: [
-            GoRoute(
-              path: '/',
-              builder: (context, state) => MyHomePage(title: 'title'),
-            ),
-            GoRoute(
-              path: '/home',
-              builder: (context, state) => Home(),
-            )
-          ]),
-          // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-        ));
-  }
-}
-```
+  );
+<br>
 
 ## Variables
 
