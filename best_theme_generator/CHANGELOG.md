@@ -2,7 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.1] - 2024-10-31
+## [0.0.3] - 2024-12-29
+### added
+- support go router
+
+## [0.0.2] - 2024-10-31
 ### Added
 - Initial release of `best_theme_generator` package.
 - Support for generating theme classes based on annotations.
