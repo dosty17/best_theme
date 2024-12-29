@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.2] - 2024-12-29
+### Added
+- Support go router
+
 ## [0.0.1] - 2024-12-26
 ### Added
 - Initial release of `best_theme` package.
