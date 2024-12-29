@@ -37,6 +37,7 @@ class _$Mytheme {
   ValueListenableBuilder BestTheme({
     required BuildContext context,
     required MaterialApp materialApp,
+    bool useRouterConfig = false,
   }) {
     return ValueListenableBuilder<ThemeParam>(
       valueListenable: _themeNotifier,
@@ -46,50 +47,85 @@ class _$Mytheme {
           isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
           _themeNotifier.value = ThemeParam(ThemeMode.system, myColors, isDark);
         }
-        return MaterialApp(
-          actions: materialApp.actions,
-          builder: materialApp.builder,
-          checkerboardOffscreenLayers: materialApp.checkerboardOffscreenLayers,
-          checkerboardRasterCacheImages:
-              materialApp.checkerboardRasterCacheImages,
-          color: materialApp.color,
-          theme: materialApp.theme,
-          darkTheme: materialApp.darkTheme ??
-              ThemeData.dark()
-                  .copyWith(colorScheme: materialApp.theme?.colorScheme),
-          debugShowCheckedModeBanner: materialApp.debugShowCheckedModeBanner,
-          debugShowMaterialGrid: materialApp.debugShowMaterialGrid,
-          highContrastDarkTheme: materialApp.highContrastDarkTheme,
-          highContrastTheme: materialApp.highContrastTheme,
-          home: materialApp.home,
-          initialRoute: materialApp.initialRoute,
-          locale: materialApp.locale,
-          key: materialApp.key,
-          localeListResolutionCallback:
-              materialApp.localeListResolutionCallback,
-          title: materialApp.title,
-          themeMode: currentMode,
-          localeResolutionCallback: materialApp.localeResolutionCallback,
-          localizationsDelegates: materialApp.localizationsDelegates,
-          navigatorKey: materialApp.navigatorKey,
-          navigatorObservers: materialApp.navigatorObservers ?? [],
-          onGenerateInitialRoutes: materialApp.onGenerateInitialRoutes,
-          onGenerateRoute: materialApp.onGenerateRoute,
-          onGenerateTitle: materialApp.onGenerateTitle,
-          onNavigationNotification: materialApp.onNavigationNotification,
-          onUnknownRoute: materialApp.onUnknownRoute,
-          restorationScopeId: materialApp.restorationScopeId,
-          routes: materialApp.routes ?? {},
-          scaffoldMessengerKey: materialApp.scaffoldMessengerKey,
-          scrollBehavior: materialApp.scrollBehavior,
-          shortcuts: materialApp.shortcuts,
-          showPerformanceOverlay: materialApp.showPerformanceOverlay,
-          showSemanticsDebugger: materialApp.showSemanticsDebugger,
-          supportedLocales: materialApp.supportedLocales,
-          themeAnimationCurve: materialApp.themeAnimationCurve,
-          themeAnimationDuration: materialApp.themeAnimationDuration,
-          themeAnimationStyle: materialApp.themeAnimationStyle,
-        );
+        return useRouterConfig
+            ? MaterialApp.router(
+                routerConfig: materialApp.routerConfig,
+                builder: materialApp.builder,
+                checkerboardOffscreenLayers:
+                    materialApp.checkerboardOffscreenLayers,
+                checkerboardRasterCacheImages:
+                    materialApp.checkerboardRasterCacheImages,
+                color: materialApp.color,
+                theme: materialApp.theme,
+                darkTheme: materialApp.darkTheme ??
+                    ThemeData.dark()
+                        .copyWith(colorScheme: materialApp.theme?.colorScheme),
+                debugShowCheckedModeBanner:
+                    materialApp.debugShowCheckedModeBanner,
+                debugShowMaterialGrid: materialApp.debugShowMaterialGrid,
+                highContrastDarkTheme: materialApp.highContrastDarkTheme,
+                highContrastTheme: materialApp.highContrastTheme,
+                locale: materialApp.locale,
+                key: materialApp.key,
+                localeListResolutionCallback:
+                    materialApp.localeListResolutionCallback,
+                title: materialApp.title,
+                themeMode: currentMode,
+                localeResolutionCallback: materialApp.localeResolutionCallback,
+                localizationsDelegates: materialApp.localizationsDelegates,
+                restorationScopeId: materialApp.restorationScopeId,
+                scrollBehavior: materialApp.scrollBehavior,
+                supportedLocales: materialApp.supportedLocales,
+                themeAnimationCurve: materialApp.themeAnimationCurve,
+                themeAnimationDuration: materialApp.themeAnimationDuration,
+                themeAnimationStyle: materialApp.themeAnimationStyle,
+              )
+            : MaterialApp(
+                actions: materialApp.actions,
+                builder: materialApp.builder,
+                checkerboardOffscreenLayers:
+                    materialApp.checkerboardOffscreenLayers,
+                checkerboardRasterCacheImages:
+                    materialApp.checkerboardRasterCacheImages,
+                color: materialApp.color,
+                theme: materialApp.theme,
+                darkTheme: materialApp.darkTheme ??
+                    ThemeData.dark()
+                        .copyWith(colorScheme: materialApp.theme?.colorScheme),
+                debugShowCheckedModeBanner:
+                    materialApp.debugShowCheckedModeBanner,
+                debugShowMaterialGrid: materialApp.debugShowMaterialGrid,
+                highContrastDarkTheme: materialApp.highContrastDarkTheme,
+                highContrastTheme: materialApp.highContrastTheme,
+                home: materialApp.home,
+                initialRoute: materialApp.initialRoute,
+                locale: materialApp.locale,
+                key: materialApp.key,
+                localeListResolutionCallback:
+                    materialApp.localeListResolutionCallback,
+                title: materialApp.title,
+                themeMode: currentMode,
+                localeResolutionCallback: materialApp.localeResolutionCallback,
+                localizationsDelegates: materialApp.localizationsDelegates,
+                navigatorKey: materialApp.navigatorKey,
+                navigatorObservers: materialApp.navigatorObservers ?? [],
+                onGenerateInitialRoutes: materialApp.onGenerateInitialRoutes,
+                onGenerateRoute: materialApp.onGenerateRoute,
+                onGenerateTitle: materialApp.onGenerateTitle,
+                onNavigationNotification: materialApp.onNavigationNotification,
+                onUnknownRoute: materialApp.onUnknownRoute,
+                restorationScopeId: materialApp.restorationScopeId,
+                routes: materialApp.routes ?? {},
+                scaffoldMessengerKey: materialApp.scaffoldMessengerKey,
+                scrollBehavior: materialApp.scrollBehavior,
+                shortcuts: materialApp.shortcuts,
+                showPerformanceOverlay: materialApp.showPerformanceOverlay,
+                showSemanticsDebugger: materialApp.showSemanticsDebugger,
+                supportedLocales: materialApp.supportedLocales,
+                themeAnimationCurve: materialApp.themeAnimationCurve,
+                themeAnimationDuration: materialApp.themeAnimationDuration,
+                themeAnimationStyle: materialApp.themeAnimationStyle,
+              );
       },
     );
   }

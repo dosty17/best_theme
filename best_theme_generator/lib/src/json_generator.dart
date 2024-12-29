@@ -59,6 +59,8 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
     buffer.writeln('  ValueListenableBuilder BestTheme({');
     buffer.writeln('    required BuildContext context,');
     buffer.writeln('    required MaterialApp materialApp,');
+    buffer.writeln('    bool useRouterConfig = false,');
+    // buffer.writeln('    RouterConfig<Object>? routerConfig,');
     buffer.writeln('  }) {');
     buffer.writeln('    return ValueListenableBuilder<ThemeParam>(');
     buffer.writeln('      valueListenable: _themeNotifier,');
@@ -71,7 +73,47 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
     buffer.writeln(
         '_themeNotifier.value = ThemeParam(ThemeMode.system, myColors, isDark);');
     buffer.writeln('        }');
-    buffer.writeln('        return MaterialApp(');
+    buffer.writeln('        return useRouterConfig ? MaterialApp.router(');
+    buffer.writeln('          routerConfig: materialApp.routerConfig,');
+    buffer.writeln('          builder: materialApp.builder,');
+    buffer.writeln(
+        '          checkerboardOffscreenLayers: materialApp.checkerboardOffscreenLayers,');
+    buffer.writeln(
+        '          checkerboardRasterCacheImages: materialApp.checkerboardRasterCacheImages,');
+    buffer.writeln('          color: materialApp.color,');
+    buffer.writeln('          theme: materialApp.theme,');
+    buffer.writeln('          darkTheme: materialApp.darkTheme ??');
+    buffer.writeln(
+        '              ThemeData.dark().copyWith(colorScheme: materialApp.theme?.colorScheme),');
+    buffer.writeln(
+        '          debugShowCheckedModeBanner: materialApp.debugShowCheckedModeBanner,');
+    buffer.writeln(
+        '          debugShowMaterialGrid: materialApp.debugShowMaterialGrid,');
+    buffer.writeln(
+        '          highContrastDarkTheme: materialApp.highContrastDarkTheme,');
+    buffer
+        .writeln('          highContrastTheme: materialApp.highContrastTheme,');
+    buffer.writeln('          locale: materialApp.locale,');
+    buffer.writeln('          key: materialApp.key,');
+    buffer.writeln(
+        '          localeListResolutionCallback: materialApp.localeListResolutionCallback,');
+    buffer.writeln('          title: materialApp.title,');
+    buffer.writeln('          themeMode: currentMode,');
+    buffer.writeln(
+        '          localeResolutionCallback: materialApp.localeResolutionCallback,');
+    buffer.writeln(
+        '          localizationsDelegates: materialApp.localizationsDelegates,');
+    buffer.writeln(
+        '          restorationScopeId: materialApp.restorationScopeId,');
+    buffer.writeln('          scrollBehavior: materialApp.scrollBehavior,');
+    buffer.writeln('          supportedLocales: materialApp.supportedLocales,');
+    buffer.writeln(
+        '          themeAnimationCurve: materialApp.themeAnimationCurve,');
+    buffer.writeln(
+        '          themeAnimationDuration: materialApp.themeAnimationDuration,');
+    buffer.writeln(
+        '          themeAnimationStyle: materialApp.themeAnimationStyle,');
+    buffer.writeln('        ) : MaterialApp(');
     buffer.writeln('          actions: materialApp.actions,');
     buffer.writeln('          builder: materialApp.builder,');
     buffer.writeln(

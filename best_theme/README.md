@@ -14,6 +14,7 @@
 - **Custom Color Support**: Add your own colors with defined light and dark variations.
 - **Theme Mode Toggling**: Easily toggle between different theme modes, including System, Light, and Dark.
 - **Streamlined Integration**: Quickly integrate with your existing Flutter projects.
+- **support go router**
 
 ## Installation
 
@@ -31,13 +32,17 @@ dart pub add dev:build_runner
 1. **Create a Theme Class**  
     Define a class for your theme that extends from the generated class. The class name should match the desired theme name.
 ```
-import 'file_name.g.dart';
+import 'package:best_theme/best_theme.dart';
+import 'package:best_theme_annotation/best_theme_annotation.dart';
+import 'package:flutter/material.dart';
+
+part 'filename.g.dart';
 
 @BestTheme
 class MyTheme extends _$MyTheme {
 }
 ```
-after run `dart run build_runner build` or `dart run build_runner watch`
+after run `dart run build_runner build` or `dart run build_runner watch` or `dart run build_runner watch --delete-conflicting-outputs`
 
 
 2. **Define Your Colors**
@@ -232,6 +237,48 @@ Container(
 <span style="color:goldenrod">Warning:</span> dont use color through this way if you want to change with toggle theme at real time
 <br>
 
+10. **You can use go router**
+<br>
+in first set useRouterConfig to true:
+```
+mytheme.BestTheme(
+    context: context,
+    useRouterConfig: true,
+    ...
+  )
+```
+example:
+```dart
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return mytheme.BestTheme(
+        context: context,
+        useRouterConfig: true,
+        materialApp: MaterialApp.router(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+          routerConfig: GoRouter(routes: [
+            GoRoute(
+              path: '/',
+              builder: (context, state) => MyHomePage(title: 'title'),
+            ),
+            GoRoute(
+              path: '/home',
+              builder: (context, state) => Home(),
+            )
+          ]),
+          // home: const MyHomePage(title: 'Flutter Demo Home Page'),
+        ));
+  }
+}
+```
+
 ## Variables
 
 | Variables                               | Description                                      |
@@ -268,9 +315,6 @@ Container(
 This package was developed by Dosty Pshtiwan.
 
 
-<br>
-<img src="https://visitcount.itsvg.in/api?id=dosty17&label=Visitor&color=12&icon=5&pretty=true" />
-<br>
 
 ## Links:
 [documentattion](https://fersaz.com/flutter/best_theme)\
