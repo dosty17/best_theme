@@ -247,38 +247,6 @@ mytheme.BestTheme(
     //...
   );
 ```
-then add you router config example:
-<br>
-``
- class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return mytheme.BestTheme(
-        context: context,
-        useRouterConfig: true,
-        materialApp: MaterialApp.router(
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            useMaterial3: true,
-          ),
-          routerConfig: GoRouter(routes: [
-            GoRoute(
-              path: '/',
-              builder: (context, state) => MyHomePage(title: 'title'),
-            ),
-            GoRoute(
-              path: '/home',
-              builder: (context, state) => Home(),
-            )
-          ]),
-          // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-        ));
-  }
- }
-``
 
 ## Variables
 
