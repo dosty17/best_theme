@@ -240,12 +240,12 @@ Container(
 10. **You can use go router**
 <br>
 set useRouterConfig to true in mytheme.BestTheme() Widget :
-```dart
+`
   mytheme.BestTheme(
     context: context,
     useRouterConfig: true,
   );
-```
+`
 
 
 ## Variables
