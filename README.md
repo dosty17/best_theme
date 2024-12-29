@@ -240,11 +240,11 @@ Container(
 10. **You can use go router**
 <br>
 in first set useRouterConfig to true:
-```
+```dart
 mytheme.BestTheme(
     context: context,
     useRouterConfig: true,
-    ...
+    //...
   )
 ```
 example:
