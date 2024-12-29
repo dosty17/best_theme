@@ -249,8 +249,8 @@ mytheme.BestTheme(
 ```
 then add you router config example:
 <br>
-```
-class MyApp extends StatelessWidget {
+``
+ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
@@ -277,7 +277,7 @@ class MyApp extends StatelessWidget {
           // home: const MyHomePage(title: 'Flutter Demo Home Page'),
         ));
   }
-}
+ }
 ``
 
 ## Variables
