@@ -223,42 +223,8 @@ myTh.BestTheme(
     home: const BottomNavigation(),
   ));
 ```
-9. **You can use go router**
-<br>
-in first set useRouterConfig to true:
-```dart
-mytheme.BestTheme(
-    context: context,
-    useRouterConfig: true,
-    //...
-  );
-```
-then add you router config example:
-<br>
-```dart
-    return mytheme.BestTheme(
-        context: context,
-        useRouterConfig: true,
-        materialApp: MaterialApp.router(
-          title: "Flutter Demo",
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            useMaterial3: true,
-          ),
-          routerConfig: GoRouter(routes: [
-            GoRoute(
-              path: "/",
-              builder: (context, state) => MyHomePage(title: "title"),
-            ),
-            GoRoute(
-              path: "/home",
-              builder: (context, state) => Home(),
-            )
-          ]),
-        ));
-```
 
-10. **You can access custom colors**
+9. **You can access custom colors**
 <br> You can access custom colors without BestThemeBuilder instead through mytheme object example:
 ```dart
 Container(
@@ -270,6 +236,17 @@ Container(
 ```
 <span style="color:goldenrod">Warning:</span> dont use color through this way if you want to change with toggle theme at real time
 <br>
+
+10. **You can use go router**
+<br>
+set useRouterConfig to true in mytheme.BestTheme() Widget :
+```dart
+  mytheme.BestTheme(
+    context: context,
+    useRouterConfig: true,
+  );
+```
+
 
 ## Variables
 
