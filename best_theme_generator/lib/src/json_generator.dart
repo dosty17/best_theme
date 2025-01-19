@@ -35,7 +35,19 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
     // Begin _$ClassName
     buffer.writeln('class _\$$className {');
     buffer.writeln('  late List<BestColor> myColors;');
+    buffer.writeln('  final Map<String, Map<String, Color>> _colors = {};');
     buffer.writeln('  bool isDark = false;');
+
+    List vars = annotation
+        .read('vars')
+        .listValue
+        .map((e) => e.toStringValue())
+        .toList();
+    if (vars.isNotEmpty) {
+      for (var eC in vars) {
+        buffer.writeln("  late Color ${eC.toString().replaceFirst('_', '')};");
+      }
+    }
     buffer.writeln(
         '  List<ThemeMode> typeOfThemes = [ThemeMode.system, ThemeMode.light, ThemeMode.dark];');
     buffer.writeln('  ThemeMode currentTheme = ThemeMode.system;');
@@ -47,6 +59,17 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
     buffer.writeln('');
     buffer.writeln(
         '  _\$$className({List<BestColor>? myColors, ThemeMode mode = ThemeMode.system}) {');
+
+    buffer.writeln('    for (var color in myColors) {');
+    buffer.writeln('      _colors[color.name] = color.toMap();');
+    buffer.writeln('    }');
+    if (vars.isNotEmpty) {
+      for (var eC in vars) {
+        buffer.writeln(
+            "    ${eC.toString().replaceFirst('_', '')} = _colors['${eC.toString().replaceFirst('_', '')}']![isDark ? 'dark' : 'light']!;");
+      }
+    }
+
     buffer.writeln('if (myColors != null) {');
     buffer.writeln('this.myColors = myColors;');
     buffer.writeln('}');
@@ -182,6 +205,7 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
     // Generate toggle methods
     buffer.writeln('  void toggle() {');
     buffer.writeln('    isDark = !isDark;');
+    buffer.writeln('toggleColor();');
     buffer.writeln(
         '    _themeNotifier.value = ThemeParam(isDark ? ThemeMode.dark : ThemeMode.light, myColors, isDark);');
     buffer.writeln('    currentTheme = _themeNotifier.value.mode;');
@@ -190,6 +214,7 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
 
     buffer.writeln('  void toDark() {');
     buffer.writeln('    isDark = true;');
+    buffer.writeln('toggleColor();');
     buffer.writeln(
         '    _themeNotifier.value = ThemeParam(ThemeMode.dark, myColors, true);');
     buffer.writeln('    currentTheme = _themeNotifier.value.mode;');
@@ -198,6 +223,7 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
 
     buffer.writeln('  void toLight() {');
     buffer.writeln('    isDark = false;');
+    buffer.writeln('toggleColor();');
     buffer.writeln(
         '    _themeNotifier.value = ThemeParam(ThemeMode.light, myColors, false);');
     buffer.writeln('    currentTheme = _themeNotifier.value.mode;');
@@ -207,6 +233,7 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
     buffer.writeln('  void toSystem(BuildContext context) {');
     buffer.writeln(
         '    isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;');
+    buffer.writeln('toggleColor();');
     buffer.writeln(
         '    _themeNotifier.value = ThemeParam(ThemeMode.system, myColors, isDark);');
     buffer.writeln('    currentTheme = _themeNotifier.value.mode;');
@@ -220,8 +247,10 @@ adanceToggle({required BuildContext context, required ThemeMode mode}) {
     } else {
       isDark = mode == ThemeMode.dark;
     }
+    toggleColor();
     _themeNotifier.value = ThemeParam(mode, myColors, isDark);
     currentTheme = _themeNotifier.value.mode;
+    
   }
 
   Color primary(context) => Theme.of(context).primaryColor;
@@ -235,6 +264,15 @@ adanceToggle({required BuildContext context, required ThemeMode mode}) {
   Color primaryColorLight(context) => Theme.of(context).primaryColorLight;
   ThemeData theme(context) => Theme.of(context);
 ''');
+
+    buffer.writeln(' toggleColor(){');
+    if (vars.isNotEmpty) {
+      for (var eC in vars) {
+        buffer.writeln(
+            "    ${eC.toString().replaceFirst('_', '')} = _colors['${eC.toString().replaceFirst('_', '')}']![isDark ? 'dark' : 'light']!;");
+      }
+    }
+    buffer.writeln('}');
 
     // Generate the wrapWithTheme method
     buffer.writeln('  Widget BestThemeBuilder({');
@@ -255,12 +293,6 @@ adanceToggle({required BuildContext context, required ThemeMode mode}) {
     buffer.writeln('class ThemeParam {');
     buffer.writeln('  late ThemeMode mode;');
     buffer.writeln('  final Map<String, Map<String, Color>> _colors = {};');
-
-    List vars = annotation
-        .read('vars')
-        .listValue
-        .map((e) => e.toStringValue())
-        .toList();
 
     if (vars.isNotEmpty) {
       for (var eC in vars) {
