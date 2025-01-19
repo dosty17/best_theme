@@ -31,10 +31,10 @@ dependencies:
   flutter:
     sdk: flutter
 
-  best_theme_annotation:
-    path: ../../best_theme_annotation
-  best_theme:
-    path: ../../best_theme
+  best_theme_annotation: 0.0.1
+    # path: ../../best_theme_annotation
+  best_theme: 0.0.3
+  #   path: ../../best_theme
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -60,8 +60,10 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
     buffer.writeln(
         '  _\$$className({List<BestColor>? myColors, ThemeMode mode = ThemeMode.system}) {');
 
+    buffer.writeln('if (myColors != null) {');
     buffer.writeln('    for (var color in myColors) {');
     buffer.writeln('      _colors[color.name] = color.toMap();');
+    buffer.writeln('    }');
     buffer.writeln('    }');
     if (vars.isNotEmpty) {
       for (var eC in vars) {

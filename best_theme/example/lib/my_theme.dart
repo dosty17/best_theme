@@ -12,7 +12,7 @@ List<BestColor> dataColor = [
   const BestColor(name: 'color2', light: Colors.black, dark: Colors.white),
   const BestColor(name: 'color3', light: Colors.amber, dark: Colors.red),
   const BestColor(name: 'color4', light: Colors.amber, dark: Colors.red),
-  const BestColor(name: 'grey2', light: Colors.grey, dark: Colors.blueGrey),
+  const BestColor(name: 'grey23', light: Colors.grey, dark: Colors.blueGrey),
   const BestColor(
       name: 'grey3', light: Colors.grey, dark: Color.fromARGB(255, 3, 43, 63)),
 ];
@@ -22,7 +22,7 @@ List<BestColor> dataColor = [
   'color2',
   'color3',
   'color4',
-  'grey2',
+  'grey23',
   'grey3',
 ])
 class Mytheme extends _$Mytheme {
