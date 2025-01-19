@@ -42,10 +42,10 @@ packages:
     dependency: "direct main"
     description:
       name: best_theme
-      sha256: cd91fcd5188a9b07c41860a482993ce93cb4d9f50fd860de9033a5eb9e0e0bb1
+      sha256: e23f577bf87f7b5f5015588c5d3572de46daee715c46bcd2eaa706b99e75070a
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.2"
+    version: "0.0.3"
   best_theme_annotation:
     dependency: "direct main"
     description:
@@ -60,7 +60,7 @@ packages:
       path: "../../best_theme_generator"
       relative: true
     source: path
-    version: "0.0.3"
+    version: "0.0.4"
   boolean_selector:
     dependency: transitive
     description:
