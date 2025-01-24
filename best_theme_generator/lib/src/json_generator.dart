@@ -51,7 +51,7 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
     buffer.writeln(
         '  List<ThemeMode> typeOfThemes = [ThemeMode.system, ThemeMode.light, ThemeMode.dark];');
     buffer.writeln('  ThemeMode currentTheme = ThemeMode.system;');
-    buffer.writeln('  ThemeParam get colors => _themeNotifier.value;');
+    // buffer.writeln('  ThemeParam get colors => _themeNotifier.value;');
     buffer.writeln('');
     // buffer.writeln(
     //     '  final ValueNotifier<ThemeParam> _themeNotifier = ValueNotifier(ThemeParam(ThemeMode.system, dataColor, false));');
@@ -97,6 +97,7 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
         '          isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;');
     buffer.writeln(
         '_themeNotifier.value = ThemeParam(ThemeMode.system, myColors, isDark);');
+    buffer.writeln('toggleColor();');
     buffer.writeln('        }');
     buffer.writeln('        return useRouterConfig ? MaterialApp.router(');
     buffer.writeln('          routerConfig: materialApp.routerConfig,');
@@ -255,7 +256,7 @@ adanceToggle({required BuildContext context, required ThemeMode mode}) {
     
   }
 
-  Color primary(context) => Theme.of(context).primaryColor;
+  Color primaryColor(context) => Theme.of(context).primaryColor;
   Color scaffoldBackgroundColor(context) =>
       Theme.of(context).scaffoldBackgroundColor;
   Color primaryColorScheme(context) => Theme.of(context).colorScheme.primary;
