@@ -390,63 +390,7 @@ Switch(
 ```
 
 The new version eliminates the need for `BestThemeBuilder` wrapper and provides direct access through context extensions and an object from MyTheme.
-
-## Examples
-
-### Basic Theme Setup
-```dart
-// Define colors
-List<BestColor> myColors = [
-  const BestColor(name: 'primary', light: Colors.blue, dark: Colors.indigo),
-  const BestColor(name: 'secondary', light: Colors.green, dark: Colors.teal),
-];
-
-// Create theme class
-@BestTheme(vars: ['primary', 'secondary'])
-class AppTheme extends _$AppTheme {
-  AppTheme() : super(myColors: myColors, mode: ThemeMode.system);
-}
-```
-
-### Theme-Aware Widget
-```dart
-class ThemedCard extends StatelessWidget {
-  final String title;
-  final String subtitle;
-
-  const ThemedCard({Key? key, required this.title, required this.subtitle}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: context.myColors.primary.withOpacity(0.1),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: context.myColors.primary,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              subtitle,
-              style: TextStyle(
-                color: context.myColors.secondary,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-```
+[Old Documentation 0.0.3](https://github.com/dosty17/best_theme/blob/main/best_theme/README_0_0_3.md)
 
 ## Contributing
 
