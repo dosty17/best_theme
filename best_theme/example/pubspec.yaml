@@ -30,11 +30,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  best_theme_annotation: 0.0.1
-    # path: ../../best_theme_annotation
-  best_theme: 0.0.3
-  #   path: ../../best_theme
+  # best_theme_annotation: 0.0.1
+  best_theme_annotation:
+    path: ../../best_theme_annotation
+  # best_theme: 0.0.3
+  best_theme:
+    path: ../../best_theme
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -52,7 +53,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
-  build_runner: ^2.4.13
+  build_runner: ^2.8.0
   best_theme_generator:
     path: ../../best_theme_generator
 

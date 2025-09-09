@@ -1,7 +1,6 @@
 import 'package:example/my_theme.dart';
 import 'package:flutter/material.dart';
 
-Mytheme mytheme = Mytheme();
 void main() {
   runApp(const MyApp());
 }
@@ -10,16 +9,15 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return mytheme.BestTheme(
-        context: context,
+    return context.BestTheme(
         materialApp: MaterialApp(
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            useMaterial3: true,
-          ),
-          home: const MyHomePage(title: 'Flutter Demo Home Page'),
-        ));
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    ));
   }
 }
 
@@ -60,33 +58,26 @@ class _MyHomePageState extends State<MyHomePage> {
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             Switch(
-              value: mytheme.isDark,
+              value: context.isDark,
               onChanged: (value) {
-                mytheme.toggle();
+                context.toggleTheme();
               },
             ),
             TextButton(
                 onPressed: () {
-                  // mytheme.toLight();
-                  // mytheme.toSystem(context);
-
-                  mytheme.adanceToggle(context: context, mode: ThemeMode.light);
+                  context.advanceToggle(ThemeMode.light);
                 },
                 child: const Text('data')),
             TextButton(
                 onPressed: () {
-                  mytheme.toDark();
+                  context.toDarkTheme();
                 },
                 child: const Text('data')),
-            mytheme.BestThemeBuilder(
-              builder: (theme, context) {
-                return Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(color: theme.grey3),
-                  child: const Text('example'),
-                );
-              },
+            Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(color: context.myColors.grey3),
+              child: const Text('example'),
             )
           ],
         ),

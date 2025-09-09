@@ -1,7 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/dart/element/visitor.dart';
+import 'package:analyzer/dart/element/visitor2.dart';
 
-class ModelVisitor extends SimpleElementVisitor<void> {
+class ModelVisitor extends SimpleElementVisitor2<void> {
   String className = '';
   Map<String, dynamic> fields = {};
 
@@ -14,6 +14,6 @@ class ModelVisitor extends SimpleElementVisitor<void> {
   @override
   void visitFieldElement(FieldElement element) {
     String elementType = element.type.toString().replaceAll("*", "");
-    fields[element.name] = elementType;
+    fields[element.name ?? ''] = elementType;
   }
 }
