@@ -67,12 +67,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: () {
                   context.advanceToggle(ThemeMode.light);
                 },
-                child: const Text('data')),
+                child: const Text('Advance Toggle')),
             TextButton(
                 onPressed: () {
                   context.toDarkTheme();
                 },
-                child: const Text('data')),
+                child: const Text('To Dark')),
             Container(
               width: 100,
               height: 100,
