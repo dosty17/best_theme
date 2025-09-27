@@ -430,8 +430,16 @@ adanceToggle({required BuildContext context, required ThemeMode mode}) {
     if (vars.isNotEmpty) {
       for (var eC in vars) {
         var nameColor = eC.toString().replaceFirst('_', '');
-        buffer.writeln(
-            ' static Color get$nameColor(BuildContext context) => BestThemeProvider.watch(context).$nameColor;');
+        // buffer.writeln(
+        //     ' static Color get$nameColor(BuildContext context) => BestThemeProvider.watch(context).$nameColor;');
+        buffer.writeln('''
+ static Color get$nameColor(BuildContext context) {
+    final provider = BestThemeProvider.of(context);
+    if (provider != null) return provider.$nameColor;
+    if (_instance == null) _\$$className.init();
+    return _\$$className.instance.$nameColor;
+  }
+''');
       }
     }
 
