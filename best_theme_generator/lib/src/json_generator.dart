@@ -89,7 +89,7 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
     buffer.writeln('''
  static void init() {
     if (_instance == null) {
-      final mythemeInstance = Mytheme();
+      final mythemeInstance = $className();
       _instance = _\$$className(
         myColors: mythemeInstance.myColors,
         mode: mythemeInstance.currentTheme,
