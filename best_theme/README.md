@@ -48,7 +48,7 @@ To install the Best Theme package, run the following commands in your terminal:
 ```bash
 flutter pub add best_theme
 flutter pub add best_theme_annotation
-dart pub add best_theme_generator
+flutter pub add dev:best_theme_generator
 dart pub add dev:build_runner
 ```
 
@@ -89,10 +89,14 @@ After creating your theme file, run the code generation:
 
 ```bash
 dart run build_runner build
+```
 # or for continuous generation
+```bash
 dart run build_runner watch
+```
 # or to resolve conflicts
-dart run build_runner watch --delete-conflicting-outputs
+```bash
+dart run build_runner watch -d
 ```
 
 ### 2. Wrap Your App with BestTheme

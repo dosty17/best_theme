@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0]
+### Added
+- Updated main package with improved dependency management
+- Enhanced compatibility with Dart 3.x and Flutter 3.x
+- Optimized internal structure for better code generation
+
+### Improved
+- Cleaned up pubspec.yaml
+- Simplified developer experience and setup
+- Improved stability and performance for theme management
+
+
 ## [0.0.4] - 2025-9-9
 ### Added
 -  **Context-based Access**: Complete redesign with BuildContext extensions for seamless theme management
