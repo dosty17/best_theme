@@ -14,7 +14,7 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
     BuildStep buildStep,
   ) {
     final ModelVisitor visitor = ModelVisitor();
-    element.visitChildren(visitor as ElementVisitor2);
+    element.visitChildren(visitor);
 
     final buffer = StringBuffer();
 

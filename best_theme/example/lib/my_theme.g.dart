@@ -15,7 +15,7 @@ part of 'my_theme.dart';
 // *                                                                        *
 // *              ⚡ Automatic theme management for Flutter apps ⚡        *
 // *                                                                        *
-// *                        Generated on: 2025-09-09                       *
+// *                        Generated on: 2025-10-29                       *
 // *                                                                        *
 // **************************************************************************
 
@@ -320,7 +320,7 @@ class _$Mytheme {
   }
 
   @Deprecated(
-      'Not needed anymore, access color directly from context.myColors.[colorName], Eg: context.myColors.dosty')
+      'Not needed anymore, access color directly from context.myColors.[colorName], Eg: context.myColors.color1')
   Widget BestThemeBuilder({
     required Widget Function(ThemeParam theme, BuildContext context) builder,
   }) {
@@ -330,25 +330,52 @@ class _$Mytheme {
     );
   }
 
-  static Color getcolor1(BuildContext context) =>
-      BestThemeProvider.watch(context).color1;
-  static Color getcolor2(BuildContext context) =>
-      BestThemeProvider.watch(context).color2;
-  static Color getcolor3(BuildContext context) =>
-      BestThemeProvider.watch(context).color3;
-  static Color getcolor4(BuildContext context) =>
-      BestThemeProvider.watch(context).color4;
-  static Color getgrey23(BuildContext context) =>
-      BestThemeProvider.watch(context).grey23;
-  static Color getgrey3(BuildContext context) =>
-      BestThemeProvider.watch(context).grey3;
+  static Color getcolor1(BuildContext context) {
+    final provider = BestThemeProvider.of(context);
+    if (provider != null) return provider.color1;
+    if (_instance == null) _$Mytheme.init();
+    return _$Mytheme.instance.color1;
+  }
+
+  static Color getcolor2(BuildContext context) {
+    final provider = BestThemeProvider.of(context);
+    if (provider != null) return provider.color2;
+    if (_instance == null) _$Mytheme.init();
+    return _$Mytheme.instance.color2;
+  }
+
+  static Color getcolor3(BuildContext context) {
+    final provider = BestThemeProvider.of(context);
+    if (provider != null) return provider.color3;
+    if (_instance == null) _$Mytheme.init();
+    return _$Mytheme.instance.color3;
+  }
+
+  static Color getcolor4(BuildContext context) {
+    final provider = BestThemeProvider.of(context);
+    if (provider != null) return provider.color4;
+    if (_instance == null) _$Mytheme.init();
+    return _$Mytheme.instance.color4;
+  }
+
+  static Color getgrey23(BuildContext context) {
+    final provider = BestThemeProvider.of(context);
+    if (provider != null) return provider.grey23;
+    if (_instance == null) _$Mytheme.init();
+    return _$Mytheme.instance.grey23;
+  }
+
+  static Color getgrey3(BuildContext context) {
+    final provider = BestThemeProvider.of(context);
+    if (provider != null) return provider.grey3;
+    if (_instance == null) _$Mytheme.init();
+    return _$Mytheme.instance.grey3;
+  }
 }
 
 class ThemeParam {
   late ThemeMode mode;
   final Map<String, Map<String, Color>> _colors = {};
-  late Color dosty;
-  late Color dosty2;
   late Color color1;
   late Color color2;
   late Color color3;
@@ -359,8 +386,6 @@ class ThemeParam {
     for (var color in myColors) {
       _colors[color.name] = color.toMap();
     }
-    dosty = _colors['dosty']![isDark ? 'dark' : 'light']!;
-    dosty2 = _colors['dosty2']![isDark ? 'dark' : 'light']!;
     color1 = _colors['color1']![isDark ? 'dark' : 'light']!;
     color2 = _colors['color2']![isDark ? 'dark' : 'light']!;
     color3 = _colors['color3']![isDark ? 'dark' : 'light']!;
