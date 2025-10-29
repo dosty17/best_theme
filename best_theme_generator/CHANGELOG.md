@@ -1,6 +1,12 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [1.0.0] - 2025-10-29
+
+- Updated dependencies for better compatibility and stability
+- Improved support for modern Flutter and Dart projects
+- Cleaned up pubspec.yaml
+
 
 ## [0.0.9] - 2025-9-27
 ## Fixed
