@@ -1,4 +1,4 @@
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:best_theme_annotation/Best_theme_annotation.dart';
 // import 'package:best_theme_annotation/best_theme_annotation.dart';
 import 'package:build/build.dart';
@@ -9,17 +9,17 @@ import 'model_visitor.dart';
 class BestGenerator extends GeneratorForAnnotation<BestTheme> {
   @override
   String generateForAnnotatedElement(
-    Element element,
+    Element2 element,
     ConstantReader annotation,
     BuildStep buildStep,
   ) {
     final ModelVisitor visitor = ModelVisitor();
-    element.visitChildren(visitor);
+    element.accept2(visitor);
 
     final buffer = StringBuffer();
 
     // Class name from the annotated element
-    final className = element.name;
+    final className = (element as ClassElement2).displayName;
     buffer.writeln('// ignore_for_file: non_constant_identifier_names');
     buffer.writeln(
         '// **************************************************************************');

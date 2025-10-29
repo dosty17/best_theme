@@ -2,7 +2,7 @@ name: best_theme_annotation
 description: "Annotations for creating and managing theme color variables in Flutter applications."
 version: 0.0.1
 homepage: https://github.com/dosty17/best_theme/tree/main/best_theme_annotation
-
+# publish_to: none
 environment:
   sdk: ^3.5.3
   flutter: ">=1.17.0"
