@@ -90,11 +90,11 @@ After creating your theme file, run the code generation:
 ```bash
 dart run build_runner build
 ```
-# or for continuous generation
+or for continuous generation
 ```bash
 dart run build_runner watch
 ```
-# or to resolve conflicts
+or to resolve conflicts
 ```bash
 dart run build_runner watch -d
 ```
