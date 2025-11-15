@@ -441,10 +441,20 @@ extension BestThemeExtension on BuildContext {
       _$Mytheme.instance.adanceToggle(context: this, mode: mode);
 
   // Add BestTheme widget creator
+  /// Creates a themed MaterialApp with BestTheme integration
+  ///
+  /// if you use go router or beamer use just use MaterialApp.router
+  /// recommended method is BestThemeRouter.
   Widget BestTheme({
     required MaterialApp materialApp,
   }) {
     _$Mytheme.init();
+    if (materialApp.routerConfig != null) {
+      return _$Mytheme.instance.BestThemeRouter(
+        context: this,
+        materialApp: materialApp,
+      );
+    }
     return _$Mytheme.instance.BestTheme(
       context: this,
       materialApp: materialApp,

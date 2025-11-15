@@ -275,7 +275,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return context.BestThemeRouter(
+    return context.BestTheme(
+      // also you can use context.BestThemeRouter safer for router
       materialApp: MaterialApp.router(
         routerConfig: router,
         title: 'My App with GoRouter',

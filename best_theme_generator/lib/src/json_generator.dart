@@ -510,11 +510,21 @@ extension BestThemeExtension on BuildContext {
   /// [mode] can be ThemeMode.light, ThemeMode.dark, or ThemeMode.system
   void advanceToggle(ThemeMode mode) => _\$$className.instance.adanceToggle(context: this, mode: mode);
 
-    // Add BestTheme widget creator
+  // Add BestTheme widget creator
+  /// Creates a themed MaterialApp with BestTheme integration
+  ///
+  /// if you use go router or beamer use just use MaterialApp.router
+  /// recommended method is BestThemeRouter.
   Widget BestTheme({
     required MaterialApp materialApp,
   }) {
   _\$$className.init();
+  if (materialApp.routerConfig != null) {
+      return _\$$className.instance.BestThemeRouter(
+        context: this,
+        materialApp: materialApp,
+      );
+    }
     return _\$$className.instance.BestTheme(
       context: this,
       materialApp: materialApp,
