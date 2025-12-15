@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 
 ## [1.2.0] - 2025-12-15
-- fix set theme from ThemeData
+- Fix issue of set theme mode from ThemeData
 
 ## [1.1.0] - 2025-11-15
 - you can use context.BestTheme also for routers
