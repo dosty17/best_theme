@@ -15,7 +15,7 @@ part of 'my_theme.dart';
 // *                                                                        *
 // *              ⚡ Automatic theme management for Flutter apps ⚡        *
 // *                                                                        *
-// *                        Generated on: 2025-10-29                       *
+// *                        Generated on: 2025-12-15                       *
 // *                                                                        *
 // **************************************************************************
 
@@ -24,6 +24,7 @@ part of 'my_theme.dart';
 
 class _$Mytheme {
   static _$Mytheme? _instance;
+  static bool _initializedFromContext = false;
   late List<BestColor> myColors;
   final Map<String, Map<String, Color>> _colors = {};
 
@@ -60,13 +61,16 @@ class _$Mytheme {
 
   late final ValueNotifier<ThemeParam> _themeNotifier;
 
-  static void init() {
-    if (_instance == null) {
+  static void init({ThemeMode? themeMode, bool fromContext = false}) {
+    if (_instance == null || (fromContext && !_initializedFromContext)) {
       final mythemeInstance = Mytheme();
       _instance = _$Mytheme(
         myColors: mythemeInstance.myColors,
-        mode: mythemeInstance.currentTheme,
+        mode: themeMode ?? mythemeInstance.currentTheme,
       );
+    }
+    if (fromContext) {
+      _initializedFromContext = true;
     }
   }
 
@@ -448,7 +452,7 @@ extension BestThemeExtension on BuildContext {
   Widget BestTheme({
     required MaterialApp materialApp,
   }) {
-    _$Mytheme.init();
+    _$Mytheme.init(themeMode: materialApp.themeMode, fromContext: true);
     if (materialApp.routerConfig != null) {
       return _$Mytheme.instance.BestThemeRouter(
         context: this,
@@ -482,10 +486,11 @@ extension BestThemeExtension on BuildContext {
   ///   ),
   /// );
   /// ```
+  @Deprecated(' Use BestTheme method, it auto detects routerConfig ')
   Widget BestThemeRouter({
     required MaterialApp materialApp,
   }) {
-    _$Mytheme.init();
+    _$Mytheme.init(themeMode: materialApp.themeMode, fromContext: true);
     return _$Mytheme.instance.BestThemeRouter(
       context: this,
       materialApp: materialApp,

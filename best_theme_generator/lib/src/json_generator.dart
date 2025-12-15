@@ -58,6 +58,7 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
     // Begin _$ClassName
     buffer.writeln('class _\$$className {');
     buffer.writeln('  static _\$$className? _instance;');
+    buffer.writeln('  static bool _initializedFromContext = false;');
     buffer.writeln('  late List<BestColor> myColors;');
     buffer.writeln('  final Map<String, Map<String, Color>> _colors = {};');
     buffer.writeln('  /// The available theme modes');
@@ -87,13 +88,16 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
     buffer.writeln('  late final ValueNotifier<ThemeParam> _themeNotifier;');
     buffer.writeln('');
     buffer.writeln('''
- static void init() {
-    if (_instance == null) {
+ static void init({ThemeMode? themeMode, bool fromContext = false}) {
+    if (_instance == null || (fromContext && !_initializedFromContext)) {
       final mythemeInstance = $className();
       _instance = _\$$className(
         myColors: mythemeInstance.myColors,
-        mode: mythemeInstance.currentTheme,
+        mode: themeMode ?? mythemeInstance.currentTheme,
       );
+    }
+     if (fromContext) {
+      _initializedFromContext = true;
     }
   }
 
@@ -518,7 +522,7 @@ extension BestThemeExtension on BuildContext {
   Widget BestTheme({
     required MaterialApp materialApp,
   }) {
-  _\$$className.init();
+  _\$$className.init(themeMode: materialApp.themeMode, fromContext: true);
   if (materialApp.routerConfig != null) {
       return _\$$className.instance.BestThemeRouter(
         context: this,
@@ -552,10 +556,11 @@ extension BestThemeExtension on BuildContext {
   ///   ),
   /// );
   /// ```
+  @Deprecated(' Use BestTheme method, it auto detects routerConfig ')
   Widget BestThemeRouter({
     required MaterialApp materialApp,
   }) {
-    _\$$className.init();
+    _\$$className.init(themeMode: materialApp.themeMode, fromContext: true);
     return _\$$className.instance.BestThemeRouter(
       context: this,
       materialApp: materialApp,

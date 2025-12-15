@@ -36,16 +36,18 @@ packages:
   best_theme:
     dependency: "direct main"
     description:
-      path: ".."
-      relative: true
-    source: path
-    version: "1.0.1"
+      name: best_theme
+      sha256: d89f534c4ce1bdbda92d622273b169a72c4fe6630c5d8e67cd9347fd9ba0acf6
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   best_theme_annotation:
     dependency: "direct main"
     description:
-      path: "../../best_theme_annotation"
-      relative: true
-    source: path
+      name: best_theme_annotation
+      sha256: c55a781d84fb7eb0dccd1d394f743790fd1a991209e197369bb4951e6fb21262
+      url: "https://pub.dev"
+    source: hosted
     version: "0.0.1"
   best_theme_generator:
     dependency: "direct dev"
@@ -53,7 +55,7 @@ packages:
       path: "../../best_theme_generator"
       relative: true
     source: path
-    version: "1.0.8"
+    version: "1.1.0"
   boolean_selector:
     dependency: transitive
     description:
