@@ -15,498 +15,180 @@ part of 'my_theme.dart';
 // *                                                                        *
 // *              ⚡ Automatic theme management for Flutter apps ⚡        *
 // *                                                                        *
-// *                        Generated on: 2025-12-15                       *
+// *                        Generated on: 2026-03-06                       *
 // *                                                                        *
 // **************************************************************************
 
 // This is a custom generator for handling theme colors
 // Generated for: Mytheme
 
-class _$Mytheme {
-  static _$Mytheme? _instance;
-  static bool _initializedFromContext = false;
-  late List<BestColor> myColors;
-  final Map<String, Map<String, Color>> _colors = {};
+@immutable
+class _MythemeTheme extends ThemeExtension<_MythemeTheme> {
+  final Color color1;
+  final Color color2;
+  final Color color3;
+  final Color color4;
+  final Color grey23;
+  final Color grey3;
 
-  /// The available theme modes
-  bool isDark = false;
+  const _MythemeTheme({
+    required this.color1,
+    required this.color2,
+    required this.color3,
+    required this.color4,
+    required this.grey23,
+    required this.grey3,
+  });
 
-  /// Color variable for color1
-  late Color color1;
+  factory _MythemeTheme.light(List<BestColor> colors) {
+    final m = {for (final c in colors) c.name: c};
+    return _MythemeTheme(
+      color1: m['color1']!.light,
+      color2: m['color2']!.light,
+      color3: m['color3']!.light,
+      color4: m['color4']!.light,
+      grey23: m['grey23']!.light,
+      grey3: m['grey3']!.light,
+    );
+  }
 
-  /// Color variable for color2
-  late Color color2;
+  factory _MythemeTheme.dark(List<BestColor> colors) {
+    final m = {for (final c in colors) c.name: c};
+    return _MythemeTheme(
+      color1: m['color1']!.dark,
+      color2: m['color2']!.dark,
+      color3: m['color3']!.dark,
+      color4: m['color4']!.dark,
+      grey23: m['grey23']!.dark,
+      grey3: m['grey3']!.dark,
+    );
+  }
 
-  /// Color variable for color3
-  late Color color3;
+  @override
+  _MythemeTheme copyWith({
+    Color? color1,
+    Color? color2,
+    Color? color3,
+    Color? color4,
+    Color? grey23,
+    Color? grey3,
+  }) {
+    return _MythemeTheme(
+      color1: color1 ?? this.color1,
+      color2: color2 ?? this.color2,
+      color3: color3 ?? this.color3,
+      color4: color4 ?? this.color4,
+      grey23: grey23 ?? this.grey23,
+      grey3: grey3 ?? this.grey3,
+    );
+  }
 
-  /// Color variable for color4
-  late Color color4;
+  @override
+  _MythemeTheme lerp(ThemeExtension<_MythemeTheme>? other, double t) {
+    if (other is! _MythemeTheme) return this;
+    return _MythemeTheme(
+      color1: Color.lerp(color1, other.color1, t)!,
+      color2: Color.lerp(color2, other.color2, t)!,
+      color3: Color.lerp(color3, other.color3, t)!,
+      color4: Color.lerp(color4, other.color4, t)!,
+      grey23: Color.lerp(grey23, other.grey23, t)!,
+      grey3: Color.lerp(grey3, other.grey3, t)!,
+    );
+  }
 
-  /// Color variable for grey23
-  late Color grey23;
+  static _MythemeTheme of(BuildContext context) =>
+      Theme.of(context).extension<_MythemeTheme>()!;
+}
 
-  /// Color variable for grey3
-  late Color grey3;
+abstract class _$Mytheme {
+  final List<BestColor> myColors;
 
-  /// The available theme modes
-  List<ThemeMode> typeOfThemes = [
-    ThemeMode.system,
-    ThemeMode.light,
-    ThemeMode.dark
-  ];
+  _$Mytheme({required this.myColors});
 
-  /// The current theme mode
-  ThemeMode currentTheme = ThemeMode.system;
+  /// Override to customize the light theme.
+  /// [theme] already contains the color extension.
+  /// Example:
+  ///   @override
+  ///   ThemeData buildLightTheme(ThemeData theme) => theme.copyWith(
+  ///     fontFamily: 'Roboto',
+  ///     primaryColor: Colors.blue,
+  ///   );
+  ThemeData buildLightTheme(ThemeData theme) => theme.copyWith();
 
-  late final ValueNotifier<ThemeParam> _themeNotifier;
+  /// Override to customize the dark theme.
+  /// [theme] already contains the color extension.
+  ThemeData buildDarkTheme(ThemeData theme) => theme.copyWith();
 
-  static void init({ThemeMode? themeMode, bool fromContext = false}) {
-    if (_instance == null || (fromContext && !_initializedFromContext)) {
-      final mythemeInstance = Mytheme();
-      _instance = _$Mytheme(
-        myColors: mythemeInstance.myColors,
-        mode: themeMode ?? mythemeInstance.currentTheme,
+  ThemeData get lightTheme => buildLightTheme(ThemeData(
+        brightness: Brightness.light,
+        extensions: [_MythemeTheme.light(myColors)],
+      ));
+
+  ThemeData get darkTheme => buildDarkTheme(ThemeData(
+        brightness: Brightness.dark,
+        extensions: [_MythemeTheme.dark(myColors)],
+      ));
+}
+
+// Use directly: MythemeBestThemeMaterial(builder: (ctx, mode, light, dark) => MaterialApp(...))
+class MythemeBestThemeMaterial extends StatefulWidget {
+  final ThemeMode initialMode;
+  final Widget Function(BuildContext context, ThemeMode mode,
+      ThemeData lightTheme, ThemeData darkTheme) builder;
+
+  const MythemeBestThemeMaterial({
+    super.key,
+    required this.builder,
+    this.initialMode = ThemeMode.system,
+  });
+
+  static _MythemeBestThemeMaterialState of(BuildContext context) =>
+      context.findAncestorStateOfType<_MythemeBestThemeMaterialState>()!;
+
+  @override
+  State<MythemeBestThemeMaterial> createState() =>
+      _MythemeBestThemeMaterialState();
+}
+
+class _MythemeBestThemeMaterialState extends State<MythemeBestThemeMaterial> {
+  late ThemeMode _mode;
+  late final Mytheme _instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _instance = Mytheme();
+    _mode = widget.initialMode;
+  }
+
+  void toggle() => setState(() {
+        _mode = _mode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
+      });
+
+  void setMode(ThemeMode mode) => setState(() => _mode = mode);
+// to dark
+  void toDark() => setState(() => _mode = ThemeMode.dark);
+  // to light
+  void toLight() => setState(() => _mode = ThemeMode.light);
+
+  @override
+  Widget build(BuildContext context) => widget.builder(
+        context,
+        _mode,
+        _instance.lightTheme,
+        _instance.darkTheme,
       );
-    }
-    if (fromContext) {
-      _initializedFromContext = true;
-    }
-  }
-
-  static _$Mytheme get instance {
-    assert(_instance != null,
-        'BestTheme not initialized. Please restart the app after adding BestTheme.');
-    return _instance!;
-  }
-
-  _$Mytheme({List<BestColor>? myColors, ThemeMode mode = ThemeMode.system}) {
-    _instance = this;
-    if (myColors != null) {
-      for (var color in myColors) {
-        _colors[color.name] = color.toMap();
-      }
-    }
-    color1 = _colors['color1']![isDark ? 'dark' : 'light']!;
-    color2 = _colors['color2']![isDark ? 'dark' : 'light']!;
-    color3 = _colors['color3']![isDark ? 'dark' : 'light']!;
-    color4 = _colors['color4']![isDark ? 'dark' : 'light']!;
-    grey23 = _colors['grey23']![isDark ? 'dark' : 'light']!;
-    grey3 = _colors['grey3']![isDark ? 'dark' : 'light']!;
-    if (myColors != null) {
-      this.myColors = myColors;
-    }
-    isDark = mode == ThemeMode.dark;
-    _themeNotifier = ValueNotifier(ThemeParam(mode, this.myColors, isDark));
-  }
-  ValueListenableBuilder BestTheme({
-    required BuildContext context,
-    required MaterialApp materialApp,
-  }) {
-    return ValueListenableBuilder<ThemeParam>(
-      valueListenable: _themeNotifier,
-      builder: (_, ThemeParam param, __) {
-        var currentMode = param.mode;
-        if (_themeNotifier.value.mode.index == ThemeMode.system.index) {
-          isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
-          _themeNotifier.value = ThemeParam(ThemeMode.system, myColors, isDark);
-          toggleColor();
-        }
-        final app = MaterialApp(
-          actions: materialApp.actions,
-          builder: materialApp.builder,
-          checkerboardOffscreenLayers: materialApp.checkerboardOffscreenLayers,
-          checkerboardRasterCacheImages:
-              materialApp.checkerboardRasterCacheImages,
-          color: materialApp.color,
-          theme: materialApp.theme,
-          darkTheme: materialApp.darkTheme ??
-              ThemeData.dark()
-                  .copyWith(colorScheme: materialApp.theme?.colorScheme),
-          debugShowCheckedModeBanner: materialApp.debugShowCheckedModeBanner,
-          debugShowMaterialGrid: materialApp.debugShowMaterialGrid,
-          highContrastDarkTheme: materialApp.highContrastDarkTheme,
-          highContrastTheme: materialApp.highContrastTheme,
-          home: materialApp.home,
-          initialRoute: materialApp.initialRoute,
-          locale: materialApp.locale,
-          key: materialApp.key,
-          localeListResolutionCallback:
-              materialApp.localeListResolutionCallback,
-          title: materialApp.title,
-          themeMode: currentMode,
-          localeResolutionCallback: materialApp.localeResolutionCallback,
-          localizationsDelegates: materialApp.localizationsDelegates,
-          navigatorKey: materialApp.navigatorKey,
-          navigatorObservers: materialApp.navigatorObservers ?? [],
-          onGenerateInitialRoutes: materialApp.onGenerateInitialRoutes,
-          onGenerateRoute: materialApp.onGenerateRoute,
-          onGenerateTitle: materialApp.onGenerateTitle,
-          onNavigationNotification: materialApp.onNavigationNotification,
-          onUnknownRoute: materialApp.onUnknownRoute,
-          restorationScopeId: materialApp.restorationScopeId,
-          routes: materialApp.routes ?? {},
-          scaffoldMessengerKey: materialApp.scaffoldMessengerKey,
-          scrollBehavior: materialApp.scrollBehavior,
-          shortcuts: materialApp.shortcuts,
-          showPerformanceOverlay: materialApp.showPerformanceOverlay,
-          showSemanticsDebugger: materialApp.showSemanticsDebugger,
-          supportedLocales: materialApp.supportedLocales,
-          themeAnimationCurve: materialApp.themeAnimationCurve,
-          themeAnimationDuration: materialApp.themeAnimationDuration,
-          themeAnimationStyle: materialApp.themeAnimationStyle,
-        );
-        return BestThemeProvider(notifier: _themeNotifier, child: app);
-      },
-    );
-  }
-
-  /// Creates a themed MaterialApp.router with BestTheme integration
-  ///
-  /// Use this method when your app uses declarative routing solutions like:
-  /// - GoRouter
-  /// - Beamer
-  ///
-  /// This wraps MaterialApp.router and automatically handles theme switching
-  /// while preserving all router configuration and navigation state.
-  ///
-  /// Example with GoRouter:
-  /// ```dart
-  /// final router = GoRouter(routes: [...]);
-  ///
-  /// return myTheme.BestThemeRouter(
-  ///   context: context,
-  ///   materialApp: MaterialApp.router(
-  ///     routerConfig: router,
-  ///     title: 'My App',
-  ///   ),
-  /// );
-  /// ```
-  ValueListenableBuilder BestThemeRouter({
-    required BuildContext context,
-    required MaterialApp materialApp,
-  }) {
-    return ValueListenableBuilder<ThemeParam>(
-      valueListenable: _themeNotifier,
-      builder: (_, ThemeParam param, __) {
-        var currentMode = param.mode;
-        if (_themeNotifier.value.mode.index == ThemeMode.system.index) {
-          isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
-          _themeNotifier.value = ThemeParam(ThemeMode.system, myColors, isDark);
-          toggleColor();
-        }
-        final app = MaterialApp.router(
-          routerConfig: materialApp.routerConfig,
-          builder: materialApp.builder,
-          checkerboardOffscreenLayers: materialApp.checkerboardOffscreenLayers,
-          checkerboardRasterCacheImages:
-              materialApp.checkerboardRasterCacheImages,
-          color: materialApp.color,
-          theme: materialApp.theme,
-          darkTheme: materialApp.darkTheme ??
-              ThemeData.dark()
-                  .copyWith(colorScheme: materialApp.theme?.colorScheme),
-          debugShowCheckedModeBanner: materialApp.debugShowCheckedModeBanner,
-          debugShowMaterialGrid: materialApp.debugShowMaterialGrid,
-          highContrastDarkTheme: materialApp.highContrastDarkTheme,
-          highContrastTheme: materialApp.highContrastTheme,
-          locale: materialApp.locale,
-          key: materialApp.key,
-          localeListResolutionCallback:
-              materialApp.localeListResolutionCallback,
-          title: materialApp.title,
-          themeMode: currentMode,
-          localeResolutionCallback: materialApp.localeResolutionCallback,
-          localizationsDelegates: materialApp.localizationsDelegates,
-          restorationScopeId: materialApp.restorationScopeId,
-          scrollBehavior: materialApp.scrollBehavior,
-          supportedLocales: materialApp.supportedLocales,
-          themeAnimationCurve: materialApp.themeAnimationCurve,
-          themeAnimationDuration: materialApp.themeAnimationDuration,
-          themeAnimationStyle: materialApp.themeAnimationStyle,
-          actions: materialApp.actions,
-          backButtonDispatcher: materialApp.backButtonDispatcher,
-          onGenerateTitle: materialApp.onGenerateTitle,
-          onNavigationNotification: materialApp.onNavigationNotification,
-          routeInformationParser: materialApp.routeInformationParser,
-          routeInformationProvider: materialApp.routeInformationProvider,
-          routerDelegate: materialApp.routerDelegate,
-          scaffoldMessengerKey: materialApp.scaffoldMessengerKey,
-          shortcuts: materialApp.shortcuts,
-          showPerformanceOverlay: materialApp.showPerformanceOverlay,
-          showSemanticsDebugger: materialApp.showSemanticsDebugger,
-        );
-        return BestThemeProvider(notifier: _themeNotifier, child: app);
-      },
-    );
-  }
-
-  /// Toggle between light and dark themes
-  void toggle() {
-    isDark = !isDark;
-    toggleColor();
-    _themeNotifier.value =
-        ThemeParam(isDark ? ThemeMode.dark : ThemeMode.light, myColors, isDark);
-    currentTheme = _themeNotifier.value.mode;
-  }
-
-  /// Set the theme to dark mode
-  void toDark() {
-    isDark = true;
-    toggleColor();
-    _themeNotifier.value = ThemeParam(ThemeMode.dark, myColors, true);
-    currentTheme = _themeNotifier.value.mode;
-  }
-
-  /// Set the theme to light mode
-  void toLight() {
-    isDark = false;
-    toggleColor();
-    _themeNotifier.value = ThemeParam(ThemeMode.light, myColors, false);
-    currentTheme = _themeNotifier.value.mode;
-  }
-
-  /// Set the theme to follow the system setting
-  void toSystem(BuildContext context) {
-    isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
-    toggleColor();
-    _themeNotifier.value = ThemeParam(ThemeMode.system, myColors, isDark);
-    currentTheme = _themeNotifier.value.mode;
-  }
-
-  /// Advanced toggle to set a specific theme mode
-  /// [mode] can be ThemeMode.light, ThemeMode.dark, or ThemeMode.system
-  adanceToggle({required BuildContext context, required ThemeMode mode}) {
-    if (mode == ThemeMode.system) {
-      isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
-      _themeNotifier.value.mode = ThemeMode.system;
-    } else {
-      isDark = mode == ThemeMode.dark;
-    }
-    toggleColor();
-    _themeNotifier.value = ThemeParam(mode, myColors, isDark);
-    currentTheme = _themeNotifier.value.mode;
-  }
-
-  /// Get the primary color from the current theme
-  Color primaryColor(context) => Theme.of(context).primaryColor;
-
-  /// Get the scaffold background color from the current theme
-  Color scaffoldBackgroundColor(context) =>
-      Theme.of(context).scaffoldBackgroundColor;
-
-  /// Get the primary color from the current theme
-  Color primaryColorScheme(context) => Theme.of(context).colorScheme.primary;
-
-  /// Get the secondary color from the current theme
-  Color secondaryColorScheme(context) =>
-      Theme.of(context).colorScheme.secondary;
-
-  /// Get the card color from the current theme
-  Color cardColor(context) => Theme.of(context).cardColor;
-
-  /// Get the primary color dark variant from the current theme
-  Color primaryColorDark(context) => Theme.of(context).primaryColorDark;
-
-  /// Get the primary color light variant from the current theme
-  Color primaryColorLight(context) => Theme.of(context).primaryColorLight;
-
-  /// Get the current ThemeData
-  ThemeData theme(context) => Theme.of(context);
-
-  toggleColor() {
-    color1 = _colors['color1']![isDark ? 'dark' : 'light']!;
-    color2 = _colors['color2']![isDark ? 'dark' : 'light']!;
-    color3 = _colors['color3']![isDark ? 'dark' : 'light']!;
-    color4 = _colors['color4']![isDark ? 'dark' : 'light']!;
-    grey23 = _colors['grey23']![isDark ? 'dark' : 'light']!;
-    grey3 = _colors['grey3']![isDark ? 'dark' : 'light']!;
-  }
-
-  @Deprecated(
-      'Not needed anymore, access color directly from context.myColors.[colorName], Eg: context.myColors.color1')
-  Widget BestThemeBuilder({
-    required Widget Function(ThemeParam theme, BuildContext context) builder,
-  }) {
-    return ValueListenableBuilder<ThemeParam>(
-      valueListenable: _themeNotifier,
-      builder: (context, themeParam, _) => builder(themeParam, context),
-    );
-  }
-
-  static Color getcolor1(BuildContext context) {
-    final provider = BestThemeProvider.of(context);
-    if (provider != null) return provider.color1;
-    if (_instance == null) _$Mytheme.init();
-    return _$Mytheme.instance.color1;
-  }
-
-  static Color getcolor2(BuildContext context) {
-    final provider = BestThemeProvider.of(context);
-    if (provider != null) return provider.color2;
-    if (_instance == null) _$Mytheme.init();
-    return _$Mytheme.instance.color2;
-  }
-
-  static Color getcolor3(BuildContext context) {
-    final provider = BestThemeProvider.of(context);
-    if (provider != null) return provider.color3;
-    if (_instance == null) _$Mytheme.init();
-    return _$Mytheme.instance.color3;
-  }
-
-  static Color getcolor4(BuildContext context) {
-    final provider = BestThemeProvider.of(context);
-    if (provider != null) return provider.color4;
-    if (_instance == null) _$Mytheme.init();
-    return _$Mytheme.instance.color4;
-  }
-
-  static Color getgrey23(BuildContext context) {
-    final provider = BestThemeProvider.of(context);
-    if (provider != null) return provider.grey23;
-    if (_instance == null) _$Mytheme.init();
-    return _$Mytheme.instance.grey23;
-  }
-
-  static Color getgrey3(BuildContext context) {
-    final provider = BestThemeProvider.of(context);
-    if (provider != null) return provider.grey3;
-    if (_instance == null) _$Mytheme.init();
-    return _$Mytheme.instance.grey3;
-  }
 }
 
-class ThemeParam {
-  late ThemeMode mode;
-  final Map<String, Map<String, Color>> _colors = {};
-  late Color color1;
-  late Color color2;
-  late Color color3;
-  late Color color4;
-  late Color grey23;
-  late Color grey3;
-  ThemeParam(this.mode, List<BestColor> myColors, bool isDark) {
-    for (var color in myColors) {
-      _colors[color.name] = color.toMap();
-    }
-    color1 = _colors['color1']![isDark ? 'dark' : 'light']!;
-    color2 = _colors['color2']![isDark ? 'dark' : 'light']!;
-    color3 = _colors['color3']![isDark ? 'dark' : 'light']!;
-    color4 = _colors['color4']![isDark ? 'dark' : 'light']!;
-    grey23 = _colors['grey23']![isDark ? 'dark' : 'light']!;
-    grey3 = _colors['grey3']![isDark ? 'dark' : 'light']!;
-  }
-}
-
-class BestThemeProvider extends InheritedNotifier<ValueNotifier<ThemeParam>> {
-  const BestThemeProvider({
-    Key? key,
-    required ValueNotifier<ThemeParam> notifier,
-    required Widget child,
-  }) : super(key: key, notifier: notifier, child: child);
-
-  static ThemeParam? of(BuildContext context) {
-    return context
-        .dependOnInheritedWidgetOfExactType<BestThemeProvider>()
-        ?.notifier
-        ?.value;
-  }
-
-  static ThemeParam watch(BuildContext context) {
-    final result = of(context);
-    assert(result != null, 'No BestThemeProvider found in context');
-    return result!;
-  }
-}
-
-extension BestThemeExtension on BuildContext {
-  /// Access your color variables via context.myColors.[colorName]
-  _MyColors get myColors => _MyColors._(this);
-
-  /// Check if the current theme is dark
-  bool get isDark => _$Mytheme.instance.isDark;
-
-  /// Toggle between light and dark themes
-  void toggleTheme() => _$Mytheme.instance.toggle();
-
-  /// Set the theme to dark mode
-  void toDarkTheme() => _$Mytheme.instance.toDark();
-
-  /// Set the theme to light mode
-  void toLightTheme() => _$Mytheme.instance.toLight();
-
-  /// Set the theme to follow the system setting
-  void toSystemTheme() => _$Mytheme.instance.toSystem(this);
-
-  /// Advanced toggle to set a specific theme mode
-  /// [mode] can be ThemeMode.light, ThemeMode.dark, or ThemeMode.system
-  void advanceToggle(ThemeMode mode) =>
-      _$Mytheme.instance.adanceToggle(context: this, mode: mode);
-
-  // Add BestTheme widget creator
-  /// Creates a themed MaterialApp with BestTheme integration
-  ///
-  /// if you use go router or beamer use just use MaterialApp.router
-  /// recommended method is BestThemeRouter.
-  Widget BestTheme({
-    required MaterialApp materialApp,
-  }) {
-    _$Mytheme.init(themeMode: materialApp.themeMode, fromContext: true);
-    if (materialApp.routerConfig != null) {
-      return _$Mytheme.instance.BestThemeRouter(
-        context: this,
-        materialApp: materialApp,
-      );
-    }
-    return _$Mytheme.instance.BestTheme(
-      context: this,
-      materialApp: materialApp,
-    );
-  }
-
-  /// Creates a themed MaterialApp.router with BestTheme integration
-  ///
-  /// Use this method when your app uses declarative routing solutions like:
-  /// - GoRouter
-  /// - Beamer
-  ///
-  /// This wraps MaterialApp.router and automatically handles theme switching
-  /// while preserving all router configuration and navigation state.
-  ///
-  /// Example with GoRouter:
-  /// ```dart
-  /// final router = GoRouter(routes: [...]);
-  ///
-  /// return myTheme.BestThemeRouter(
-  ///   context: context,
-  ///   materialApp: MaterialApp.router(
-  ///     routerConfig: router,
-  ///     title: 'My App',
-  ///   ),
-  /// );
-  /// ```
-  @Deprecated(' Use BestTheme method, it auto detects routerConfig ')
-  Widget BestThemeRouter({
-    required MaterialApp materialApp,
-  }) {
-    _$Mytheme.init(themeMode: materialApp.themeMode, fromContext: true);
-    return _$Mytheme.instance.BestThemeRouter(
-      context: this,
-      materialApp: materialApp,
-    );
-  }
-}
-
-class _MyColors {
-  final BuildContext _context;
-
-  _MyColors._(this._context);
-
-  Color get color1 => _$Mytheme.getcolor1(_context);
-  Color get color2 => _$Mytheme.getcolor2(_context);
-  Color get color3 => _$Mytheme.getcolor3(_context);
-  Color get color4 => _$Mytheme.getcolor4(_context);
-  Color get grey23 => _$Mytheme.getgrey23(_context);
-  Color get grey3 => _$Mytheme.getgrey3(_context);
+extension MythemeContextExtension on BuildContext {
+  _MythemeTheme get myColors => _MythemeTheme.of(this);
+  bool get isDark => Theme.of(this).brightness == Brightness.dark;
+  Color get scaffoldBackgroundColor => Theme.of(this).scaffoldBackgroundColor;
+  Color get primary => Theme.of(this).primaryColor;
+  Color get primaryScheme => Theme.of(this).colorScheme.primary;
+  void toggleTheme() => MythemeBestThemeMaterial.of(this).toggle();
+  void setThemeMode(ThemeMode mode) =>
+      MythemeBestThemeMaterial.of(this).setMode(mode);
+  void toDark() => MythemeBestThemeMaterial.of(this).toDark();
+  void toLight() => MythemeBestThemeMaterial.of(this).toLight();
 }

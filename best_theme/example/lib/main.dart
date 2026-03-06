@@ -9,15 +9,15 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return context.BestTheme(
-        materialApp: MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    ));
+    return MythemeBestThemeMaterial(
+        initialMode: ThemeMode.dark,
+        builder: (context, mode, lightTheme, darkTheme) => MaterialApp(
+              title: 'Flutter Demo',
+              themeMode: mode,
+              theme: lightTheme,
+              darkTheme: darkTheme,
+              home: const MyHomePage(title: 'Flutter Demo Home Page'),
+            ));
   }
 }
 
@@ -65,12 +65,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             TextButton(
                 onPressed: () {
-                  context.advanceToggle(ThemeMode.light);
+                  context.setThemeMode(ThemeMode.light);
                 },
                 child: const Text('Advance Toggle')),
             TextButton(
                 onPressed: () {
-                  context.toDarkTheme();
+                  context.setThemeMode(ThemeMode.dark);
                 },
                 child: const Text('To Dark')),
             Container(

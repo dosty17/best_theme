@@ -24,7 +24,12 @@ List<BestColor> dataColor = [
   'color4',
   'grey23',
   'grey3',
-])
+], extensionName: 'myColors')
 class Mytheme extends _$Mytheme {
-  Mytheme() : super(myColors: dataColor, mode: ThemeMode.system);
+  Mytheme() : super(myColors: dataColor);
+  @override
+  ThemeData buildDarkTheme(ThemeData theme) {
+    // TODO: implement buildDarkTheme
+    return super.buildDarkTheme(theme);
+  }
 }

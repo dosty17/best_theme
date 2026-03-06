@@ -1,6 +1,7 @@
 class BestTheme {
   final List vars;
-  const BestTheme({this.vars = const []});
+  final String extensionName;
+  const BestTheme({this.vars = const [], this.extensionName = 'bestTheme'});
 }
 
 // This variable will used as annotation to generate the code

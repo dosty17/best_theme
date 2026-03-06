@@ -6,44 +6,39 @@
 
 <hr>
 
-**Best Theme** is a powerful Flutter package designed to simplify theme management within your applications. It provides an intuitive way to define and switch between light and dark modes while allowing you to add your own custom colors with seamless context-based access.
-ac
+**Best Theme** is a powerful Flutter package designed to simplify theme management within your applications. It provides an intuitive way to define and switch between light and dark modes while allowing you to add your own custom colors with seamless context-based access — powered by Flutter's native `ThemeExtension` system.
+
 ## Table of Contents
 
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
-  - [Create Theme File](#1-create-theme-file-with-colors-and-class-definition)
-  - [Wrap Your App](#2-wrap-your-app-with-besttheme)
-  - [Using Custom Colors](#3-using-custom-colors)
-  - [Theme Control](#4-theme-control)
-  - [Theme Toggle Switch](#5-theme-toggle-switch-example)
-  - [Complete Example](#6-complete-example-with-custom-colors)
-  - [Custom Font Support](#7-custom-font-support)
-  - [GoRouter Support](#8-gorouter-support)
+  - [1. Create Theme File](#1-create-theme-file-with-colors-and-class-definition)
+  - [2. Wrap Your App](#2-wrap-your-app-with-classnamebesthemematerial)
+  - [3. Using Custom Colors](#3-using-custom-colors)
+  - [4. Customize ThemeData](#4-customize-themedata-fonts-colors-etc)
+  - [5. Theme Control](#5-theme-control)
+  - [6. Toggle Switch Example](#6-theme-toggle-switch-example)
+  - [7. Complete Example](#7-complete-example)
+  - [8. GoRouter Support](#8-gorouter-support)
 - [API Reference](#api-reference)
   - [Context Extensions](#context-extensions)
-  - [Available Properties](#available-properties)
-  - [Additional Methods](#additional-methods)
-  - [Short Methods for Theme Colors](#short-methods-for-theme-colors)
-- [Migration Guide](#migration-from-previous-version)
-- [Examples](#examples)
+- [Migration from 1.x](#migration-from-1x-old-version)
 - [Contributing](#contributing)
 - [About the Developer](#about-the-developer)
 - [Links](#links)
 
 ## Features
 
-- **Easy Theme Management**: Effortlessly manage themes for your Flutter application.
-- **Custom Color Support**: Add your own colors with defined light and dark variations.
-- **Theme Mode Toggling**: Easily toggle between different theme modes, including System, Light, and Dark.
-- **Context-based Access**: Access colors and theme functions directly through BuildContext extensions.
-- **GoRouter Support**: Full support for declarative routing solutions like GoRouter.
-- **Automatic Theme Switching**: Seamless theme switching with real-time updates.
+- **ThemeExtension-based**: Fully integrated with Flutter's native `ThemeData.extensions` system.
+- **No object needed**: Use `MyThemeMaterial` directly as your app root — no manual instantiation.
+- **Custom Color Support**: Define light and dark variants for each color in one place.
+- **Customizable ThemeData**: Override `buildLightTheme` / `buildDarkTheme` to set fonts, color schemes, and more.
+- **Context-based Access**: Access colors and theme controls directly via `BuildContext` extensions.
+- **Custom extension name**: Name your context getter via `extensionName` in the annotation.
+- **GoRouter / declarative routing**: Works seamlessly with any routing solution.
 
 ## Installation
-
-To install the Best Theme package, run the following commands in your terminal:
 
 ```bash
 flutter pub add best_theme
@@ -65,163 +60,184 @@ import 'package:flutter/material.dart';
 
 part 'my_theme.g.dart';
 
-// Define your colors first
+// Define your colors — one entry per color with light and dark variants
 List<BestColor> dataColor = [
-  const BestColor(name: 'primary', light: Colors.blue, dark: Colors.indigo),
-  const BestColor(name: 'text', light: Colors.black87, dark: Colors.white70),
-  const BestColor(name: 'color1', light: Color(0xffFCB949), dark: Color(0xffEBED6B)),
-  const BestColor(name: 'color2', light: Color(0xff10161C), dark: Colors.white),
+  const BestColor(name: 'primary', light: Colors.blue,      dark: Colors.indigo),
+  const BestColor(name: 'text',    light: Colors.black87,   dark: Colors.white70),
+  const BestColor(name: 'card',    light: Color(0xffFCFCFC),dark: Color(0xff1E1E2A)),
 ];
 
-// Create theme class with vars based on your defined colors
-@BestTheme(vars: [
-  'primary',
-  'text',
-  'color1',
-  'color2',
-])
+// extensionName controls the BuildContext getter: context.appColors
+@BestTheme(
+  vars: ['primary', 'text', 'card'],
+  extensionName: 'appColors',
+)
 class MyTheme extends _$MyTheme {
-  MyTheme() : super(myColors: dataColor, mode: ThemeMode.system);
+  MyTheme() : super(myColors: dataColor);
 }
 ```
 
-After creating your theme file, run the code generation:
+Run code generation:
 
 ```bash
-dart run build_runner build
+dart run build_runner build -d
 ```
-or for continuous generation
-```bash
-dart run build_runner watch
-```
-or to resolve conflicts
+
+Or watch for changes:
+
 ```bash
 dart run build_runner watch -d
 ```
 
-### 2. Wrap Your App with BestTheme
+---
 
-Use the context to wrap your app with BestTheme:
+### 2. Wrap Your App with `MyThemeMaterial`
+
+No object creation needed — just use the generated widget directly:
 
 ```dart
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return context.BestTheme(
-      materialApp: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home: const MyHomePage(title: 'Flutter Demo Home Page'),
+void main() {
+  runApp(
+    MyThemeMaterial(
+      initialMode: ThemeMode.system,
+      builder: (context, mode, lightTheme, darkTheme) => MaterialApp(
+        title: 'My App',
+        themeMode: mode,
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        home: const HomePage(),
       ),
-    );
-  }
+    ),
+  );
 }
 ```
 
+---
+
 ### 3. Using Custom Colors
 
-Access your custom colors directly through the context:
+Access your colors anywhere through the context using the `extensionName` you set:
 
 ```dart
 Container(
-  width: 100,
-  height: 100,
   decoration: BoxDecoration(
-    color: context.myColors.primary,
-    border: Border.all(color: context.myColors.color1),
+    color: context.appColors.card,
+    border: Border.all(color: context.appColors.primary),
   ),
   child: Text(
-    'Example',
-    style: TextStyle(color: context.myColors.text),
+    'Hello!',
+    style: TextStyle(color: context.appColors.text),
   ),
 );
 ```
 
-All your defined colors are available through `context.myColors.[colorName]`:
-- `context.myColors.primary`
-- `context.myColors.text`
-- `context.myColors.color1`
-- `context.myColors.color2`
+---
 
-### 4. Theme Control
+### 4. Customize ThemeData (fonts, colors, etc.)
 
-Toggle and control themes using context extensions:
+Override `buildLightTheme` and/or `buildDarkTheme` in your class. The `base` parameter already has the color extension injected — just `copyWith` what you need:
+
+```dart
+@BestTheme(vars: ['primary', 'text', 'card'], extensionName: 'appColors')
+class MyTheme extends _$MyTheme {
+  MyTheme() : super(myColors: dataColor);
+
+  @override
+  ThemeData buildLightTheme(ThemeData base) => base.copyWith(
+    fontFamily: 'Roboto',
+    primaryColor: Colors.blue,
+    appBarTheme: const AppBarTheme(elevation: 0, centerTitle: true),
+    colorScheme: ColorScheme.light(primary: Colors.blue),
+  );
+
+  @override
+  ThemeData buildDarkTheme(ThemeData base) => base.copyWith(
+    fontFamily: 'Roboto',
+    scaffoldBackgroundColor: const Color(0xFF0A1628),
+    colorScheme: ColorScheme.dark(primary: Colors.indigo),
+  );
+}
+```
+
+---
+
+### 5. Theme Control
+
+Use context extensions to toggle and set the theme from anywhere in the widget tree:
 
 ```dart
 // Toggle between light and dark
 context.toggleTheme();
 
-// Set specific theme modes
-context.toDarkTheme();
-context.toLightTheme();
-context.toSystemTheme();
+// Set a specific mode
+context.setThemeMode(ThemeMode.dark);
+context.toDark();
+context.toLight();
 
-// Advanced toggle with specific mode
-context.advanceToggle(ThemeMode.dark);
-
-// Check current theme state
+// Check current state
 bool isDarkMode = context.isDark;
+
+// Access Flutter ThemeData helpers
+Color bg   = context.scaffoldBackgroundColor;
+Color pri  = context.primary;
+Color pri2 = context.primaryScheme;
 ```
 
-### 5. Theme Toggle Switch Example
+---
+
+### 6. Theme Toggle Switch Example
 
 ```dart
 Switch(
   value: context.isDark,
-  onChanged: (value) {
-    context.toggleTheme();
-  },
+  onChanged: (_) => context.toggleTheme(),
 );
 ```
 
-### 6. Complete Example with Custom Colors
+---
+
+### 7. Complete Example
 
 ```dart
 class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: context.myColors.primary,
-        title: Text(
-          'Best Theme Demo',
-          style: TextStyle(color: Colors.white),
-        ),
+        backgroundColor: context.appColors.primary,
+        title: const Text('Best Theme Demo'),
         actions: [
           Switch(
             value: context.isDark,
-            onChanged: (value) => context.toggleTheme(),
+            onChanged: (_) => context.toggleTheme(),
           ),
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: context.myColors.color1,
+                color: context.appColors.card,
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: context.myColors.color2),
+                border: Border.all(color: context.appColors.primary),
               ),
               child: Text(
-                'This container adapts to your theme!',
-                style: TextStyle(color: context.myColors.text),
+                'This adapts to your theme!',
+                style: TextStyle(color: context.appColors.text),
               ),
             ),
             const SizedBox(height: 16),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: context.myColors.color1,
+                backgroundColor: context.appColors.primary,
               ),
-              onPressed: () {},
-              child: Text('Accent Button'),
+              onPressed: () => context.setThemeMode(ThemeMode.light),
+              child: const Text('Switch to Light'),
             ),
           ],
         ),
@@ -231,175 +247,156 @@ class HomePage extends StatelessWidget {
 }
 ```
 
-### 7. Custom Font Support
-
-```dart
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return context.BestTheme(
-      materialApp: MaterialApp(
-        title: 'My App',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: context.myColors.primary),
-          scaffoldBackgroundColor: context.myColors.background,
-          useMaterial3: true,
-          fontFamily: 'MyCustomFont',
-        ),
-        darkTheme: ThemeData.dark().copyWith(
-          colorScheme: ColorScheme.fromSeed(seedColor: context.myColors.primary),
-          scaffoldBackgroundColor: context.myColors.background,
-          textTheme: ThemeData.dark().textTheme.apply(fontFamily: 'MyCustomFont'),
-        ),
-        home: const HomePage(),
-      ),
-    );
-  }
-}
-```
+---
 
 ### 8. GoRouter Support
 
-For apps using GoRouter or other declarative routing solutions:
+Works with any router — just pass `MaterialApp.router` to the builder:
 
 ```dart
-class MyApp extends StatelessWidget {
-  final GoRouter router = GoRouter(
-    routes: [
-      GoRoute(
-        path: '/',
-        builder: (context, state) => const HomePage(),
-      ),
-    ],
-  );
+final _router = GoRouter(routes: [
+  GoRoute(path: '/', builder: (_, __) => const HomePage()),
+]);
 
-  @override
-  Widget build(BuildContext context) {
-    return context.BestTheme(
-      // also you can use context.BestThemeRouter safer for router
-      materialApp: MaterialApp.router(
-        routerConfig: router,
-        title: 'My App with GoRouter',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: context.myColors.primary),
-          useMaterial3: true,
-        ),
+void main() {
+  runApp(
+    MyThemeMaterial(
+      initialMode: ThemeMode.system,
+      builder: (context, mode, lightTheme, darkTheme) => MaterialApp.router(
+        routerConfig: _router,
+        themeMode: mode,
+        theme: lightTheme,
+        darkTheme: darkTheme,
       ),
-    );
-  }
+    ),
+  );
 }
 ```
+
+---
 
 ## API Reference
 
 ### Context Extensions
 
-| Extension Method                        | Description                                      |
-|-----------------------------------------|--------------------------------------------------|
-| `context.myColors.[colorName]`          | Access any defined custom color                  |
-| `context.isDark`                        | Check if current mode is dark                    |
-| `context.toggleTheme()`                 | Toggle between light and dark themes            |
-| `context.toDarkTheme()`                 | Switch to dark theme                             |
-| `context.toLightTheme()`                | Switch to light theme                            |
-| `context.toSystemTheme()`               | Switch to system theme                           |
-| `context.advanceToggle(ThemeMode mode)` | Advanced toggle with specified mode              |
-| `context.BestTheme(materialApp: ...)`   | Wrap app with BestTheme                          |
-| `context.BestThemeRouter(materialApp: ...)`| Wrap router app with BestTheme               |
+| Extension                             | Description                            |
+| ------------------------------------- | -------------------------------------- |
+| `context.{extensionName}.{colorName}` | Access any defined custom color        |
+| `context.isDark`                      | `true` when current brightness is dark |
+| `context.toggleTheme()`               | Toggle between light and dark          |
+| `context.setThemeMode(ThemeMode)`     | Set a specific theme mode              |
+| `context.toDark()`                    | Switch to dark mode                    |
+| `context.toLight()`                   | Switch to light mode                   |
+| `context.scaffoldBackgroundColor`     | Current scaffold background color      |
+| `context.primary`                     | Current `Theme.primaryColor`           |
+| `context.primaryScheme`               | Current `colorScheme.primary`          |
 
-### Available Properties
+### `_$ClassName` Overridable Hooks
 
-Access these properties through the generated instance:
+| Method                            | Description                             |
+| --------------------------------- | --------------------------------------- |
+| `buildLightTheme(ThemeData base)` | Override to customize light `ThemeData` |
+| `buildDarkTheme(ThemeData base)`  | Override to customize dark `ThemeData`  |
 
-| Property                                | Description                                      |
-|-----------------------------------------|--------------------------------------------------|
-| `isDark`                                | Check if current mode is dark                    |
-| `typeOfThemes`                          | Return all theme mode types                      |
-| `currentTheme`                          | Return current theme mode                        |
-| `myColors`                              | Return all defined colors                        |
+---
 
-### Additional Methods
+## Migration from 1.x (old version)
 
-| Method                                  | Description                                      |
-|-----------------------------------------|--------------------------------------------------|
-| `toggle()`                              | Toggle theme                                     |
-| `toSystem(context)`                     | Switch to system theme                           |
-| `toLight()`                             | Switch to light theme                            |
-| `toDark()`                              | Switch to dark theme                             |
-| `adanceToggle(context: context, mode: ThemeMode.?)` | Advanced toggle with specified mode     |
+> For the old 1.0.2 documentation using the singleton approach, see the
+> **[1.0.2 README](https://github.com/dosty17/best_theme/blob/main/best_theme/README_0_0_3.md)**.
 
-### Short Methods for Theme Colors
+### App setup
 
-| Method                                  | Description                                      |
-|-----------------------------------------|--------------------------------------------------|
-| `theme(context)`                        | Get the current theme context                    |
-| `primaryColor(context)`                 | Access the primary color                         |
-| `scaffoldBackgroundColor(context)`      | Access the scaffold background color             |
-| `primaryColorScheme(context)`           | Access the primary color scheme                  |
-| `secondaryColorScheme(context)`         | Access the secondary color scheme                |
-| `cardColor(context)`                    | Access the card color                            |
-| `primaryColorDark(context)`             | Access the primary dark color                    |
-| `primaryColorLight(context)`            | Access the primary light color                   |
+**Old (1.x):**
 
-## Migration from Previous Version
-
-If you're migrating from the previous version:
-
-### Access to Colors
-
-**Old way:**
 ```dart
-myTheme.BestThemeBuilder(
-  builder: (theme, context) {
-    return Container(
-      color: theme.color1,
-      child: Text('Example'),
+// Needed a context wrapper method
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return context.BestTheme(
+      materialApp: MaterialApp(...),
     );
-  },
-);
+  }
+}
 ```
 
-**New way:**
+**New (2.0):**
+
 ```dart
-Container(
-  color: context.myColors.color1,
-  child: Text('Example'),
-);
+// Standalone widget — no StatelessWidget wrapper needed
+void main() {
+  runApp(
+    MyThemeMaterial(
+      builder: (context, mode, light, dark) => MaterialApp(
+        themeMode: mode,
+        theme: light,
+        darkTheme: dark,
+        home: const HomePage(),
+      ),
+    ),
+  );
+}
 ```
 
-### Toggle Theme
+### Color access
 
-**Old way:**
-<br>
-First need to create an object from MyTheme like:
+**Old (1.x):**
+
 ```dart
-MyTheme myTheme = MyTheme();
-```
-```dart
-Switch(
-  value: myTheme.isDark,
-  onChanged: (value) {
-    myTheme.toggle();
-  },
-);
+context.myColors.color1
 ```
 
-**New way:**
-<br>
+**New (2.0):**
+
 ```dart
-Switch(
-  value: context.isDark,
-  onChanged: (value) {
-    context.toggleTheme();
-  },
-);
+context.appColors.color1  // uses your extensionName
 ```
 
-The new version eliminates the need for `BestThemeBuilder` wrapper and provides direct access through context extensions and an object from MyTheme.
-[Old Documentation 0.0.3](https://github.com/dosty17/best_theme/blob/main/best_theme/README_0_0_3.md)
+### Theme class definition
+
+**Old (1.x):**
+
+```dart
+class MyTheme extends _$MyTheme {
+  MyTheme() : super(myColors: dataColor, mode: ThemeMode.system);
+}
+```
+
+**New (2.0):**
+
+```dart
+class MyTheme extends _$MyTheme {
+  MyTheme() : super(myColors: dataColor);
+
+  @override
+  ThemeData buildLightTheme(ThemeData base) => base.copyWith(fontFamily: 'Roboto');
+}
+```
+
+### Theme toggling
+
+**Old (1.x):**
+
+```dart
+context.toDarkTheme();
+context.toLightTheme();
+context.advanceToggle(ThemeMode.dark);
+```
+
+**New (2.0):**
+
+```dart
+context.toDark();
+context.toLight();
+context.setThemeMode(ThemeMode.dark);
+```
+
+---
 
 ## Contributing
 
-We welcome contributions to the Best Theme package! Here's how you can help:
+We welcome contributions to the Best Theme package!
 
 1. **Report Issues**: Found a bug? [Open an issue](https://github.com/dosty17/best_theme/issues)
 2. **Request Features**: Have an idea? Share it with us!
@@ -417,13 +414,7 @@ This package was developed by **Dosty Pshtiwan**, a passionate Flutter developer
 
 ## Links
 
-- 🎥 **[YouTube Tutorials](https://www.youtube.com/playlist?list=PLwY2YLEPF3yAeT3r_Pdak7DO0PQbvzN_g)**: Video tutorials and examples
-- 💻 **[GitHub Repository](https://github.com/dosty17)**: Source code and issue tracker
-- 🌐 **[Official Website](https://www.dostypshtiwan.com/)**: Developer's official website
-- 📘 **[Facebook](https://www.facebook.com/dosty.pshtiwan18)**: Follow for updates and community
-
----
-
-**Made with ❤️ by [Dosty Pshtiwan](https://www.dostypshtiwan.com/)**
-
-*If you find this package helpful, please consider giving it a ⭐ on [GitHub](https://github.com/dosty17)!*
+- 🎥 **[YouTube Tutorials](https://www.youtube.com/playlist?list=PLwY2YLEPF3yAeT3r_Pdak7DO0PQbvzN_g)**
+- 💻 **[GitHub Repository](https://github.com/dosty17)**
+- 🌐 **[Official Website](https://www.dostypshtiwan.com/)**
+- 📘 **[Facebook](https://www.facebook.com/dosty.pshtiwan18)**

@@ -55,536 +55,208 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
     buffer.writeln('// Generated for: $className');
     buffer.writeln('');
 
-    // Begin _$ClassName
-    buffer.writeln('class _\$$className {');
-    buffer.writeln('  static _\$$className? _instance;');
-    buffer.writeln('  static bool _initializedFromContext = false;');
-    buffer.writeln('  late List<BestColor> myColors;');
-    buffer.writeln('  final Map<String, Map<String, Color>> _colors = {};');
-    buffer.writeln('  /// The available theme modes');
-    buffer.writeln('  bool isDark = false;');
-
-    List vars = annotation
+    // Read vars list from annotation
+    final vars = annotation
         .read('vars')
         .listValue
-        .map((e) => e.toStringValue())
+        .map((e) => e.toStringValue()!)
         .toList();
-    if (vars.isNotEmpty) {
-      for (var eC in vars) {
-        buffer.writeln(
-            "  /// Color variable for ${eC.toString().replaceFirst('_', '')}");
-        buffer.writeln("  late Color ${eC.toString().replaceFirst('_', '')};");
-      }
-    }
-    buffer.writeln('/// The available theme modes');
-    buffer.writeln(
-        '  List<ThemeMode> typeOfThemes = [ThemeMode.system, ThemeMode.light, ThemeMode.dark];');
-    buffer.writeln('  /// The current theme mode');
-    buffer.writeln('  ThemeMode currentTheme = ThemeMode.system;');
-    // buffer.writeln('  ThemeParam get colors => _themeNotifier.value;');
-    buffer.writeln('');
-    // buffer.writeln(
-    //     '  final ValueNotifier<ThemeParam> _themeNotifier = ValueNotifier(ThemeParam(ThemeMode.system, dataColor, false));');
-    buffer.writeln('  late final ValueNotifier<ThemeParam> _themeNotifier;');
-    buffer.writeln('');
-    buffer.writeln('''
- static void init({ThemeMode? themeMode, bool fromContext = false}) {
-    if (_instance == null || (fromContext && !_initializedFromContext)) {
-      final mythemeInstance = $className();
-      _instance = _\$$className(
-        myColors: mythemeInstance.myColors,
-        mode: themeMode ?? mythemeInstance.currentTheme,
-      );
-    }
-     if (fromContext) {
-      _initializedFromContext = true;
-    }
-  }
 
-static _\$$className get instance {
-    assert(_instance != null,
-        'BestTheme not initialized. Please restart the app after adding BestTheme.');
-    return _instance!;
-  }''');
-    buffer.writeln('');
+    // ── 1. ThemeExtension class ──────────────────────────────────────────
+    buffer.writeln('@immutable');
     buffer.writeln(
-        '  _\$$className({List<BestColor>? myColors, ThemeMode mode = ThemeMode.system}) {');
+        'class _${className}Theme extends ThemeExtension<_${className}Theme> {');
 
-    buffer.writeln(' _instance = this;');
-    buffer.writeln('if (myColors != null) {');
-    buffer.writeln('    for (var color in myColors) {');
-    buffer.writeln('      _colors[color.name] = color.toMap();');
-    buffer.writeln('    }');
-    buffer.writeln('    }');
-    if (vars.isNotEmpty) {
-      for (var eC in vars) {
-        buffer.writeln(
-            "    ${eC.toString().replaceFirst('_', '')} = _colors['${eC.toString().replaceFirst('_', '')}']![isDark ? 'dark' : 'light']!;");
-      }
+    // final Color fields
+    for (final v in vars) {
+      buffer.writeln('  final Color $v;');
     }
+    buffer.writeln('');
 
-    buffer.writeln('if (myColors != null) {');
-    buffer.writeln('this.myColors = myColors;');
-    buffer.writeln('}');
-    buffer.writeln('isDark=mode == ThemeMode.dark;');
+    // const constructor
+    buffer.writeln('  const _${className}Theme({');
+    for (final v in vars) {
+      buffer.writeln('    required this.$v,');
+    }
+    buffer.writeln('  });');
+    buffer.writeln('');
+
+    // .light factory
     buffer.writeln(
-        '    _themeNotifier = ValueNotifier(ThemeParam(mode, this.myColors, isDark));');
+        '  factory _${className}Theme.light(List<BestColor> colors) {');
+    buffer.writeln('    final m = {for (final c in colors) c.name: c};');
+    buffer.writeln('    return _${className}Theme(');
+    for (final v in vars) {
+      buffer.writeln("      $v: m['$v']!.light,");
+    }
+    buffer.writeln('    );');
     buffer.writeln('  }');
+    buffer.writeln('');
 
-    // Generate the `BestTheme` method
-    buffer.writeln('  ValueListenableBuilder BestTheme({');
-    buffer.writeln('    required BuildContext context,');
-    buffer.writeln('    required MaterialApp materialApp,');
-    // buffer.writeln('    RouterConfig<Object>? routerConfig,');
-    buffer.writeln('  }) {');
-    buffer.writeln('    return ValueListenableBuilder<ThemeParam>(');
-    buffer.writeln('      valueListenable: _themeNotifier,');
-    buffer.writeln('      builder: (_, ThemeParam param, __) {');
-    buffer.writeln('        var currentMode = param.mode;');
-    buffer.writeln(
-        '        if (_themeNotifier.value.mode.index == ThemeMode.system.index) {');
-    buffer.writeln(
-        '          isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;');
-    buffer.writeln(
-        '_themeNotifier.value = ThemeParam(ThemeMode.system, myColors, isDark);');
-    buffer.writeln('toggleColor();');
-    buffer.writeln('        }');
-    // if (vars.isNotEmpty) {
-    //   buffer.writeln(
-    //       '        Color _color = _themeNotifier.value.${vars.first.toString().replaceFirst('_', '')};');
-    // }
-
-    buffer.writeln('        final app=MaterialApp(');
-    buffer.writeln('          actions: materialApp.actions,');
-    buffer.writeln('          builder: materialApp.builder,');
-    buffer.writeln(
-        '          checkerboardOffscreenLayers: materialApp.checkerboardOffscreenLayers,');
-    buffer.writeln(
-        '          checkerboardRasterCacheImages: materialApp.checkerboardRasterCacheImages,');
-    buffer.writeln('          color: materialApp.color,');
-    buffer.writeln('          theme: materialApp.theme,');
-    buffer.writeln('          darkTheme: materialApp.darkTheme ??');
-    buffer.writeln(
-        '              ThemeData.dark().copyWith(colorScheme: materialApp.theme?.colorScheme),');
-    buffer.writeln(
-        '          debugShowCheckedModeBanner: materialApp.debugShowCheckedModeBanner,');
-    buffer.writeln(
-        '          debugShowMaterialGrid: materialApp.debugShowMaterialGrid,');
-    buffer.writeln(
-        '          highContrastDarkTheme: materialApp.highContrastDarkTheme,');
+    // .dark factory
     buffer
-        .writeln('          highContrastTheme: materialApp.highContrastTheme,');
-    buffer.writeln('          home: materialApp.home,');
-    buffer.writeln('          initialRoute: materialApp.initialRoute,');
-    buffer.writeln('          locale: materialApp.locale,');
-    buffer.writeln('          key: materialApp.key,');
-    buffer.writeln(
-        '          localeListResolutionCallback: materialApp.localeListResolutionCallback,');
-    buffer.writeln('          title: materialApp.title,');
-    buffer.writeln('          themeMode: currentMode,');
-    buffer.writeln(
-        '          localeResolutionCallback: materialApp.localeResolutionCallback,');
-    buffer.writeln(
-        '          localizationsDelegates: materialApp.localizationsDelegates,');
-    buffer.writeln('          navigatorKey: materialApp.navigatorKey,');
-    buffer.writeln(
-        '          navigatorObservers: materialApp.navigatorObservers ?? [],');
-    buffer.writeln(
-        '          onGenerateInitialRoutes: materialApp.onGenerateInitialRoutes,');
-    buffer.writeln('          onGenerateRoute: materialApp.onGenerateRoute,');
-    buffer.writeln('          onGenerateTitle: materialApp.onGenerateTitle,');
-    buffer.writeln(
-        '          onNavigationNotification: materialApp.onNavigationNotification,');
-    buffer.writeln('          onUnknownRoute: materialApp.onUnknownRoute,');
-    buffer.writeln(
-        '          restorationScopeId: materialApp.restorationScopeId,');
-    buffer.writeln('          routes: materialApp.routes ?? {},');
-    buffer.writeln(
-        '          scaffoldMessengerKey: materialApp.scaffoldMessengerKey,');
-    buffer.writeln('          scrollBehavior: materialApp.scrollBehavior,');
-    buffer.writeln('          shortcuts: materialApp.shortcuts,');
-    buffer.writeln(
-        '          showPerformanceOverlay: materialApp.showPerformanceOverlay,');
-    buffer.writeln(
-        '          showSemanticsDebugger: materialApp.showSemanticsDebugger,');
-    buffer.writeln('          supportedLocales: materialApp.supportedLocales,');
-    buffer.writeln(
-        '          themeAnimationCurve: materialApp.themeAnimationCurve,');
-    buffer.writeln(
-        '          themeAnimationDuration: materialApp.themeAnimationDuration,');
-    buffer.writeln(
-        '          themeAnimationStyle: materialApp.themeAnimationStyle,');
-    buffer.writeln('        );');
-    buffer.writeln(
-        '        return BestThemeProvider(notifier: _themeNotifier, child: app);');
-    buffer.writeln('      },');
+        .writeln('  factory _${className}Theme.dark(List<BestColor> colors) {');
+    buffer.writeln('    final m = {for (final c in colors) c.name: c};');
+    buffer.writeln('    return _${className}Theme(');
+    for (final v in vars) {
+      buffer.writeln("      $v: m['$v']!.dark,");
+    }
     buffer.writeln('    );');
     buffer.writeln('  }');
     buffer.writeln('');
 
-    // ------------------------------------------
-    // Generate the `BestThemeRouter` method
-    buffer.writeln('''
-/// Creates a themed MaterialApp.router with BestTheme integration
-  ///
-  /// Use this method when your app uses declarative routing solutions like:
-  /// - GoRouter
-  /// - Beamer
-  ///
-  /// This wraps MaterialApp.router and automatically handles theme switching
-  /// while preserving all router configuration and navigation state.
-  ///
-  /// Example with GoRouter:
-  /// ```dart
-  /// final router = GoRouter(routes: [...]);
-  ///
-  /// return myTheme.BestThemeRouter(
-  ///   context: context,
-  ///   materialApp: MaterialApp.router(
-  ///     routerConfig: router,
-  ///     title: 'My App',
-  ///   ),
-  /// );
-  /// ```''');
-    buffer.writeln('  ValueListenableBuilder BestThemeRouter({');
-    buffer.writeln('    required BuildContext context,');
-    buffer.writeln('    required MaterialApp materialApp,');
-    // buffer.writeln('    RouterConfig<Object>? routerConfig,');
+    // copyWith
+    buffer.writeln('  @override');
+    buffer.writeln('  _${className}Theme copyWith({');
+    for (final v in vars) {
+      buffer.writeln('    Color? $v,');
+    }
     buffer.writeln('  }) {');
-    buffer.writeln('    return ValueListenableBuilder<ThemeParam>(');
-    buffer.writeln('      valueListenable: _themeNotifier,');
-    buffer.writeln('      builder: (_, ThemeParam param, __) {');
-    buffer.writeln('        var currentMode = param.mode;');
+    buffer.writeln('    return _${className}Theme(');
+    for (final v in vars) {
+      buffer.writeln('      $v: $v ?? this.$v,');
+    }
+    buffer.writeln('    );');
+    buffer.writeln('  }');
+    buffer.writeln('');
+
+    // lerp
+    buffer.writeln('  @override');
     buffer.writeln(
-        '        if (_themeNotifier.value.mode.index == ThemeMode.system.index) {');
+        '  _${className}Theme lerp(ThemeExtension<_${className}Theme>? other, double t) {');
+    buffer.writeln('    if (other is! _${className}Theme) return this;');
+    buffer.writeln('    return _${className}Theme(');
+    for (final v in vars) {
+      buffer.writeln('      $v: Color.lerp($v, other.$v, t)!,');
+    }
+    buffer.writeln('    );');
+    buffer.writeln('  }');
+    buffer.writeln('');
+
+    // static of
+    buffer.writeln('  static _${className}Theme of(BuildContext context) =>');
+    buffer.writeln('      Theme.of(context).extension<_${className}Theme>()!;');
+    buffer.writeln('}');
+    buffer.writeln('');
+
+    // ── 2. Abstract theme class (user extends _$ClassName) ────────────────
+    buffer.writeln('abstract class _\$$className {');
+    buffer.writeln('  final List<BestColor> myColors;');
+    buffer.writeln('');
+    buffer.writeln('  _\$$className({required this.myColors});');
+    buffer.writeln('');
+    buffer.writeln('  /// Override to customize the light theme.');
+    buffer.writeln('  /// [theme] already contains the color extension.');
+    buffer.writeln('  /// Example:');
+    buffer.writeln('  ///   @override');
     buffer.writeln(
-        '          isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;');
+        '  ///   ThemeData buildLightTheme(ThemeData theme) => theme.copyWith(');
+    buffer.writeln('  ///     fontFamily: \'Roboto\',');
+    buffer.writeln('  ///     primaryColor: Colors.blue,');
+    buffer.writeln('  ///   );');
+    buffer.writeln('  ThemeData buildLightTheme(ThemeData theme) => theme;');
+    buffer.writeln('');
+    buffer.writeln('  /// Override to customize the dark theme.');
+    buffer.writeln('  /// [theme] already contains the color extension.');
+    buffer.writeln('  ThemeData buildDarkTheme(ThemeData theme) => theme;');
+    buffer.writeln('');
+    buffer.writeln('  ThemeData get lightTheme => buildLightTheme(ThemeData(');
+    buffer.writeln('    brightness: Brightness.light,');
+    buffer.writeln('    extensions: [_${className}Theme.light(myColors)],');
+    buffer.writeln('  ));');
+    buffer.writeln('');
+    buffer.writeln('  ThemeData get darkTheme => buildDarkTheme(ThemeData(');
+    buffer.writeln('    brightness: Brightness.dark,');
+    buffer.writeln('    extensions: [_${className}Theme.dark(myColors)],');
+    buffer.writeln('  ));');
+    buffer.writeln('}');
+    buffer.writeln('');
+
+    // ── 3. Public standalone StatefulWidget ──────────────────────────────
+    // Builder signature: (BuildContext, ThemeMode, ThemeData light, ThemeData dark)
     buffer.writeln(
-        '_themeNotifier.value = ThemeParam(ThemeMode.system, myColors, isDark);');
-    buffer.writeln('toggleColor();');
-    buffer.writeln('        }');
-    // if (vars.isNotEmpty) {
-    //   buffer.writeln(
-    //       '        Color _color = _themeNotifier.value.${vars.first.toString().replaceFirst('_', '')};');
-    // }
-    buffer.writeln('        final app = MaterialApp.router(');
-    buffer.writeln('          routerConfig: materialApp.routerConfig,');
-    buffer.writeln('          builder: materialApp.builder,');
+        '// Use directly: ${className}Material(builder: (ctx, mode, light, dark) => MaterialApp(...))');
+    buffer.writeln('class ${className}Material extends StatefulWidget {');
+    buffer.writeln('  final ThemeMode initialMode;');
     buffer.writeln(
-        '          checkerboardOffscreenLayers: materialApp.checkerboardOffscreenLayers,');
+        '  final Widget Function(BuildContext context, ThemeMode mode, ThemeData lightTheme, ThemeData darkTheme) builder;');
+    buffer.writeln('');
+    buffer.writeln('  const ${className}Material({');
+    buffer.writeln('    super.key,');
+    buffer.writeln('    required this.builder,');
+    buffer.writeln('    this.initialMode = ThemeMode.system,');
+    buffer.writeln('  });');
+    buffer.writeln('');
     buffer.writeln(
-        '          checkerboardRasterCacheImages: materialApp.checkerboardRasterCacheImages,');
-    buffer.writeln('          color: materialApp.color,');
-    buffer.writeln('          theme: materialApp.theme,');
-    buffer.writeln('          darkTheme: materialApp.darkTheme ??');
+        '  static _${className}MaterialState of(BuildContext context) =>');
     buffer.writeln(
-        '              ThemeData.dark().copyWith(colorScheme: materialApp.theme?.colorScheme),');
+        '      context.findAncestorStateOfType<_${className}MaterialState>()!;');
+    buffer.writeln('');
+    buffer.writeln('  @override');
     buffer.writeln(
-        '          debugShowCheckedModeBanner: materialApp.debugShowCheckedModeBanner,');
+        '  State<${className}Material> createState() => _${className}MaterialState();');
+    buffer.writeln('}');
+    buffer.writeln('');
+
+    // ── 4. State ─────────────────────────────────────────────────────────
     buffer.writeln(
-        '          debugShowMaterialGrid: materialApp.debugShowMaterialGrid,');
+        'class _${className}MaterialState extends State<${className}Material> {');
+    buffer.writeln('  late ThemeMode _mode;');
+    buffer.writeln('  late final $className _instance;');
+    buffer.writeln('');
+    buffer.writeln('  @override');
+    buffer.writeln('  void initState() {');
+    buffer.writeln('    super.initState();');
+    buffer.writeln('    _instance = $className();');
+    buffer.writeln('    _mode = widget.initialMode;');
+    buffer.writeln('  }');
+    buffer.writeln('');
+    buffer.writeln('  void toggle() => setState(() {');
     buffer.writeln(
-        '          highContrastDarkTheme: materialApp.highContrastDarkTheme,');
+        '    _mode = _mode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;');
+    buffer.writeln('  });');
+    buffer.writeln('');
+    buffer.writeln(
+        '  void setMode(ThemeMode mode) => setState(() => _mode = mode);');
+    buffer.writeln('''
+// to dark
+  void toDark() => setState(() => _mode = ThemeMode.dark);
+  // to light
+  void toLight() => setState(() => _mode = ThemeMode.light);
+''');
+    buffer.writeln('');
+    buffer.writeln('  @override');
+    buffer.writeln('  Widget build(BuildContext context) => widget.builder(');
+    buffer.writeln('    context,');
+    buffer.writeln('    _mode,');
+    buffer.writeln('    _instance.lightTheme,');
+    buffer.writeln('    _instance.darkTheme,');
+    buffer.writeln('  );');
+    buffer.writeln('}');
+    buffer.writeln('');
+
+    // ── 5. BuildContext extension ─────────────────────────────────────────
+    final extensionName = annotation.read('extensionName').stringValue;
+    buffer.writeln('extension ${className}ContextExtension on BuildContext {');
+    buffer.writeln(
+        '  _${className}Theme get $extensionName => _${className}Theme.of(this);');
+    buffer.writeln(
+        '  bool get isDark => Theme.of(this).brightness == Brightness.dark;');
+    buffer.writeln(
+        '  Color get scaffoldBackgroundColor => Theme.of(this).scaffoldBackgroundColor;');
+    buffer.writeln('  Color get primary => Theme.of(this).primaryColor;');
+    buffer.writeln(
+        '  Color get primaryScheme => Theme.of(this).colorScheme.primary;');
+    buffer.writeln(
+        '  void toggleTheme() => ${className}Material.of(this).toggle();');
+    buffer.writeln(
+        '  void setThemeMode(ThemeMode mode) => ${className}Material.of(this).setMode(mode);');
     buffer
-        .writeln('          highContrastTheme: materialApp.highContrastTheme,');
-    buffer.writeln('          locale: materialApp.locale,');
-    buffer.writeln('          key: materialApp.key,');
+        .writeln('  void toDark() => ${className}Material.of(this).toDark();');
     buffer.writeln(
-        '          localeListResolutionCallback: materialApp.localeListResolutionCallback,');
-    buffer.writeln('          title: materialApp.title,');
-    buffer.writeln('          themeMode: currentMode,');
-    buffer.writeln(
-        '          localeResolutionCallback: materialApp.localeResolutionCallback,');
-    buffer.writeln(
-        '          localizationsDelegates: materialApp.localizationsDelegates,');
-    buffer.writeln(
-        '          restorationScopeId: materialApp.restorationScopeId,');
-    buffer.writeln('          scrollBehavior: materialApp.scrollBehavior,');
-    buffer.writeln('          supportedLocales: materialApp.supportedLocales,');
-    buffer.writeln(
-        '          themeAnimationCurve: materialApp.themeAnimationCurve,');
-    buffer.writeln(
-        '          themeAnimationDuration: materialApp.themeAnimationDuration,');
-    buffer.writeln(
-        '          themeAnimationStyle: materialApp.themeAnimationStyle,');
-    buffer.writeln('''
-  actions: materialApp.actions,
-          backButtonDispatcher: materialApp.backButtonDispatcher,
-          onGenerateTitle: materialApp.onGenerateTitle,
-          onNavigationNotification: materialApp.onNavigationNotification,
-          routeInformationParser: materialApp.routeInformationParser,
-          routeInformationProvider: materialApp.routeInformationProvider,
-          routerDelegate: materialApp.routerDelegate,
-          scaffoldMessengerKey: materialApp.scaffoldMessengerKey,
-          shortcuts: materialApp.shortcuts,
-          showPerformanceOverlay: materialApp.showPerformanceOverlay,
-          showSemanticsDebugger: materialApp.showSemanticsDebugger,''');
-    buffer.writeln('        );');
-    buffer.writeln(
-        '        return BestThemeProvider(notifier: _themeNotifier, child: app);');
-    buffer.writeln('      },');
-    buffer.writeln('    );');
-    buffer.writeln('  }');
-    buffer.writeln('');
-
-    // Generate toggle methods
-    buffer.writeln('  /// Toggle between light and dark themes');
-    buffer.writeln('  void toggle() {');
-    buffer.writeln('    isDark = !isDark;');
-    buffer.writeln('toggleColor();');
-    buffer.writeln(
-        '    _themeNotifier.value = ThemeParam(isDark ? ThemeMode.dark : ThemeMode.light, myColors, isDark);');
-    buffer.writeln('    currentTheme = _themeNotifier.value.mode;');
-    buffer.writeln('  }');
-    buffer.writeln('');
-
-    buffer.writeln('  /// Set the theme to dark mode');
-    buffer.writeln('  void toDark() {');
-    buffer.writeln('    isDark = true;');
-    buffer.writeln('toggleColor();');
-    buffer.writeln(
-        '    _themeNotifier.value = ThemeParam(ThemeMode.dark, myColors, true);');
-    buffer.writeln('    currentTheme = _themeNotifier.value.mode;');
-    buffer.writeln('  }');
-    buffer.writeln('');
-
-    buffer.writeln('  /// Set the theme to light mode');
-    buffer.writeln('  void toLight() {');
-    buffer.writeln('    isDark = false;');
-    buffer.writeln('toggleColor();');
-    buffer.writeln(
-        '    _themeNotifier.value = ThemeParam(ThemeMode.light, myColors, false);');
-    buffer.writeln('    currentTheme = _themeNotifier.value.mode;');
-    buffer.writeln('  }');
-    buffer.writeln('');
-
-    buffer.writeln('  /// Set the theme to follow the system setting');
-    buffer.writeln('  void toSystem(BuildContext context) {');
-    buffer.writeln(
-        '    isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;');
-    buffer.writeln('toggleColor();');
-    buffer.writeln(
-        '    _themeNotifier.value = ThemeParam(ThemeMode.system, myColors, isDark);');
-    buffer.writeln('    currentTheme = _themeNotifier.value.mode;');
-    buffer.writeln('  }');
-    buffer.writeln('');
-    buffer.writeln('/// Advanced toggle to set a specific theme mode');
-    buffer.writeln(
-        '/// [mode] can be ThemeMode.light, ThemeMode.dark, or ThemeMode.system');
-    buffer.writeln('''
-adanceToggle({required BuildContext context, required ThemeMode mode}) {
-   if (mode == ThemeMode.system) {
-      isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
-      _themeNotifier.value.mode = ThemeMode.system;
-    } else {
-      isDark = mode == ThemeMode.dark;
-    }
-    toggleColor();
-    _themeNotifier.value = ThemeParam(mode, myColors, isDark);
-    currentTheme = _themeNotifier.value.mode;
-    
-  }
-  
-  /// Get the primary color from the current theme
-  Color primaryColor(context) => Theme.of(context).primaryColor;
-  /// Get the scaffold background color from the current theme
-  Color scaffoldBackgroundColor(context) =>
-      Theme.of(context).scaffoldBackgroundColor;
-  /// Get the primary color from the current theme
-  Color primaryColorScheme(context) => Theme.of(context).colorScheme.primary;
-  /// Get the secondary color from the current theme
-  Color secondaryColorScheme(context) =>
-      Theme.of(context).colorScheme.secondary;
-  /// Get the card color from the current theme
-  Color cardColor(context) => Theme.of(context).cardColor;
-  /// Get the primary color dark variant from the current theme
-  Color primaryColorDark(context) => Theme.of(context).primaryColorDark;
-  /// Get the primary color light variant from the current theme
-  Color primaryColorLight(context) => Theme.of(context).primaryColorLight;
-  /// Get the current ThemeData
-  ThemeData theme(context) => Theme.of(context);
-''');
-
-    buffer.writeln(' toggleColor(){');
-    if (vars.isNotEmpty) {
-      for (var eC in vars) {
-        buffer.writeln(
-            "    ${eC.toString().replaceFirst('_', '')} = _colors['${eC.toString().replaceFirst('_', '')}']![isDark ? 'dark' : 'light']!;");
-      }
-    }
+        '  void toLight() => ${className}Material.of(this).toLight();');
     buffer.writeln('}');
 
-    var msg = vars.isEmpty
-        ? ''
-        : 'Eg: context.myColors.${vars.first.toString().replaceFirst('_', '')}';
-
-    buffer.writeln(
-        "  @Deprecated('Not needed anymore, access color directly from context.myColors.[colorName], $msg')");
-    buffer.writeln('  Widget BestThemeBuilder({');
-    buffer.writeln(
-        '    required Widget Function(ThemeParam theme, BuildContext context) builder,');
-    buffer.writeln('  }) {');
-    buffer.writeln('    return ValueListenableBuilder<ThemeParam>(');
-    buffer.writeln('      valueListenable: _themeNotifier,');
-    buffer.writeln(
-        '      builder: (context, themeParam, _) => builder(themeParam, context),');
-    buffer.writeln('    );');
-    buffer.writeln('  }');
-    buffer.writeln('');
-    if (vars.isNotEmpty) {
-      for (var eC in vars) {
-        var nameColor = eC.toString().replaceFirst('_', '');
-        // buffer.writeln(
-        //     ' static Color get$nameColor(BuildContext context) => BestThemeProvider.watch(context).$nameColor;');
-        buffer.writeln('''
- static Color get$nameColor(BuildContext context) {
-    final provider = BestThemeProvider.of(context);
-    if (provider != null) return provider.$nameColor;
-    if (_instance == null) _\$$className.init();
-    return _\$$className.instance.$nameColor;
-  }
-''');
-      }
-    }
-
-    buffer.writeln('}');
-    buffer.writeln('');
-
-    // Add the ThemeParam class dynamically
-    buffer.writeln('class ThemeParam {');
-    buffer.writeln('  late ThemeMode mode;');
-    buffer.writeln('  final Map<String, Map<String, Color>> _colors = {};');
-
-    if (vars.isNotEmpty) {
-      for (var eC in vars) {
-        buffer.writeln("  late Color ${eC.toString().replaceFirst('_', '')};");
-      }
-    }
-
-    buffer.writeln(
-        '  ThemeParam(this.mode, List<BestColor> myColors, bool isDark) {');
-    buffer.writeln('    for (var color in myColors) {');
-    buffer.writeln('      _colors[color.name] = color.toMap();');
-    buffer.writeln('    }');
-    if (vars.isNotEmpty) {
-      for (var eC in vars) {
-        buffer.writeln(
-            "    ${eC.toString().replaceFirst('_', '')} = _colors['${eC.toString().replaceFirst('_', '')}']![isDark ? 'dark' : 'light']!;");
-      }
-    }
-    buffer.writeln('  }');
-    buffer.writeln('}');
-    buffer.writeln('''
-class BestThemeProvider extends InheritedNotifier<ValueNotifier<ThemeParam>> {
-  const BestThemeProvider({
-    Key? key,
-    required ValueNotifier<ThemeParam> notifier,
-    required Widget child,
-  }) : super(key: key, notifier: notifier, child: child);
-
-  static ThemeParam? of(BuildContext context) {
-    return context
-        .dependOnInheritedWidgetOfExactType<BestThemeProvider>()
-        ?.notifier
-        ?.value;
-  }
-
-  static ThemeParam watch(BuildContext context) {
-    final result = of(context);
-    assert(result != null, 'No BestThemeProvider found in context');
-    return result!;
-  }
-}
-
-
-extension BestThemeExtension on BuildContext {
-  /// Access your color variables via context.myColors.[colorName]
-  _MyColors get myColors => _MyColors._(this);
-  /// Check if the current theme is dark
-  bool get isDark => _\$$className.instance.isDark;
-    /// Toggle between light and dark themes
-  void toggleTheme() => _\$$className.instance.toggle();
-    /// Set the theme to dark mode
-  void toDarkTheme() => _\$$className.instance.toDark();
-    /// Set the theme to light mode
-  void toLightTheme() => _\$$className.instance.toLight();
-  /// Set the theme to follow the system setting
-  void toSystemTheme() => _\$$className.instance.toSystem(this);
-  /// Advanced toggle to set a specific theme mode
-  /// [mode] can be ThemeMode.light, ThemeMode.dark, or ThemeMode.system
-  void advanceToggle(ThemeMode mode) => _\$$className.instance.adanceToggle(context: this, mode: mode);
-
-  // Add BestTheme widget creator
-  /// Creates a themed MaterialApp with BestTheme integration
-  ///
-  /// if you use go router or beamer use just use MaterialApp.router
-  /// recommended method is BestThemeRouter.
-  Widget BestTheme({
-    required MaterialApp materialApp,
-  }) {
-  _\$$className.init(themeMode: materialApp.themeMode, fromContext: true);
-  if (materialApp.routerConfig != null) {
-      return _\$$className.instance.BestThemeRouter(
-        context: this,
-        materialApp: materialApp,
-      );
-    }
-    return _\$$className.instance.BestTheme(
-      context: this,
-      materialApp: materialApp,
-    );
-  }
-
- /// Creates a themed MaterialApp.router with BestTheme integration
-  ///
-  /// Use this method when your app uses declarative routing solutions like:
-  /// - GoRouter
-  /// - Beamer
-  ///
-  /// This wraps MaterialApp.router and automatically handles theme switching
-  /// while preserving all router configuration and navigation state.
-  ///
-  /// Example with GoRouter:
-  /// ```dart
-  /// final router = GoRouter(routes: [...]);
-  ///
-  /// return myTheme.BestThemeRouter(
-  ///   context: context,
-  ///   materialApp: MaterialApp.router(
-  ///     routerConfig: router,
-  ///     title: 'My App',
-  ///   ),
-  /// );
-  /// ```
-  @Deprecated(' Use BestTheme method, it auto detects routerConfig ')
-  Widget BestThemeRouter({
-    required MaterialApp materialApp,
-  }) {
-    _\$$className.init(themeMode: materialApp.themeMode, fromContext: true);
-    return _\$$className.instance.BestThemeRouter(
-      context: this,
-      materialApp: materialApp,
-    );
-  }
-  
-}
-
-
-class _MyColors {
-  final BuildContext _context;
-
-  _MyColors._(this._context);
-''');
-    if (vars.isNotEmpty) {
-      for (var eC in vars) {
-        var nameColor = eC.toString().replaceFirst('_', '');
-        buffer.writeln(
-            'Color get $nameColor => _\$$className.get$nameColor(_context);');
-      }
-    }
-    buffer.writeln('}');
-    buffer.writeln('''
-''');
     return buffer.toString();
   }
 }
