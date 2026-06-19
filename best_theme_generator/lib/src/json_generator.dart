@@ -288,7 +288,7 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
     buffer.writeln('');
 
     // ── 5. BuildContext extension ─────────────────────────────────────────
-    final extensionName = annotation.read('extensionName').stringValue;
+    // final extensionName = annotation.read('extensionName').stringValue;
     buffer.writeln('extension \${className}ContextExtension on BuildContext {');
     buffer.writeln(
         '  _\${className}Theme get \$extensionName => _\${className}Theme.of(this);');
