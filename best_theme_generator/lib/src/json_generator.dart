@@ -27,7 +27,7 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
     final textStyleVars = <String>[];
     final assetVars = <String>[];
 
-    // Safely cast to ClassElement2 structure using generic fallbacks
+    // Safely cast to ClassElement structure using generic fallbacks
     final classElement = element as ClassElement;
 
     for (final field in classElement.fields) {
@@ -69,89 +69,55 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
     // ── 1. ThemeExtension class ──────────────────────────────────────────
     buffer.writeln('@immutable');
     buffer.writeln(
-        'class _\${className}Theme extends ThemeExtension<_\${className}Theme> {');
+        'class _\$${className}Theme extends ThemeExtension<_\$${className}Theme> {');
 
     // Declare specific type properties matching tokens fields
-    for (final v in colorVars) {
-      buffer.writeln('  final Color $v;');
-    }
-    for (final v in textStyleVars) {
-      buffer.writeln('  final TextStyle $v;');
-    }
-    for (final v in assetVars) {
-      buffer.writeln('  final String $v;');
-    }
+    for (final v in colorVars) buffer.writeln('  final Color $v;');
+    for (final v in textStyleVars) buffer.writeln('  final TextStyle $v;');
+    for (final v in assetVars) buffer.writeln('  final String $v;');
     buffer.writeln('');
 
     // Typed constructor injection
-    buffer.writeln('  const _\${className}Theme({');
-    for (final v in colorVars) {
-      buffer.writeln('    required this.$v,');
-    }
-    for (final v in textStyleVars) {
-      buffer.writeln('    required this.$v,');
-    }
-    for (final v in assetVars) {
-      buffer.writeln('    required this.$v,');
-    }
+    buffer.writeln('  const _\$${className}Theme({');
+    for (final v in colorVars) buffer.writeln('    required this.$v,');
+    for (final v in textStyleVars) buffer.writeln('    required this.$v,');
+    for (final v in assetVars) buffer.writeln('    required this.$v,');
     buffer.writeln('  });');
     buffer.writeln('');
 
     // Light theme factory mapping directly to compile-time configuration fields
-    buffer.writeln('  factory _\${className}Theme.light() {');
-    buffer.writeln('    return _\${className}Theme(');
-    for (final v in colorVars) {
+    buffer.writeln('  factory _\$${className}Theme.light() {');
+    buffer.writeln('    return _\$${className}Theme(');
+    for (final v in colorVars) buffer.writeln('      $v: $className.$v.light,');
+    for (final v in textStyleVars)
       buffer.writeln('      $v: $className.$v.light,');
-    }
-    for (final v in textStyleVars) {
-      buffer.writeln('      $v: $className.$v.light,');
-    }
-    for (final v in assetVars) {
-      buffer.writeln('      $v: $className.$v.light,');
-    }
+    for (final v in assetVars) buffer.writeln('      $v: $className.$v.light,');
     buffer.writeln('    );');
     buffer.writeln('  }');
     buffer.writeln('');
 
     // Dark theme factory mapping directly to compile-time configuration fields
-    buffer.writeln('  factory _\${className}Theme.dark() {');
-    buffer.writeln('    return _\${className}Theme(');
-    for (final v in colorVars) {
+    buffer.writeln('  factory _\$${className}Theme.dark() {');
+    buffer.writeln('    return _\$${className}Theme(');
+    for (final v in colorVars) buffer.writeln('      $v: $className.$v.dark,');
+    for (final v in textStyleVars)
       buffer.writeln('      $v: $className.$v.dark,');
-    }
-    for (final v in textStyleVars) {
-      buffer.writeln('      $v: $className.$v.dark,');
-    }
-    for (final v in assetVars) {
-      buffer.writeln('      $v: $className.$v.dark,');
-    }
+    for (final v in assetVars) buffer.writeln('      $v: $className.$v.dark,');
     buffer.writeln('    );');
     buffer.writeln('  }');
     buffer.writeln('');
 
     // Type safe CopyWith signature
     buffer.writeln('  @override');
-    buffer.writeln('  _\${className}Theme copyWith({');
-    for (final v in colorVars) {
-      buffer.writeln('    Color? $v,');
-    }
-    for (final v in textStyleVars) {
-      buffer.writeln('    TextStyle? $v,');
-    }
-    for (final v in assetVars) {
-      buffer.writeln('    String? $v,');
-    }
+    buffer.writeln('  _\$${className}Theme copyWith({');
+    for (final v in colorVars) buffer.writeln('    Color? $v,');
+    for (final v in textStyleVars) buffer.writeln('    TextStyle? $v,');
+    for (final v in assetVars) buffer.writeln('    String? $v,');
     buffer.writeln('  }) {');
-    buffer.writeln('    return _\${className}Theme(');
-    for (final v in colorVars) {
-      buffer.writeln('      $v: $v ?? this.$v,');
-    }
-    for (final v in textStyleVars) {
-      buffer.writeln('      $v: $v ?? this.$v,');
-    }
-    for (final v in assetVars) {
-      buffer.writeln('      $v: $v ?? this.$v,');
-    }
+    buffer.writeln('    return _\$${className}Theme(');
+    for (final v in colorVars) buffer.writeln('      $v: $v ?? this.$v,');
+    for (final v in textStyleVars) buffer.writeln('      $v: $v ?? this.$v,');
+    for (final v in assetVars) buffer.writeln('      $v: $v ?? this.$v,');
     buffer.writeln('    );');
     buffer.writeln('  }');
     buffer.writeln('');
@@ -159,32 +125,29 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
     // Fluid interpolation support across all type layouts
     buffer.writeln('  @override');
     buffer.writeln(
-        '  _\${className}Theme lerp(ThemeExtension<_\${className}Theme>? other, double t) {');
-    buffer.writeln('    if (other is! _\text{className}Theme) return this;');
-    buffer.writeln('    return _\${className}Theme(');
-    for (final v in colorVars) {
+        '  _\$${className}Theme lerp(ThemeExtension<_\$${className}Theme>? other, double t) {');
+    buffer.writeln('    if (other is! _\$${className}Theme) return this;');
+    buffer.writeln('    return _\$${className}Theme(');
+    for (final v in colorVars)
       buffer.writeln('      $v: Color.lerp($v, other.$v, t)!,');
-    }
-    for (final v in textStyleVars) {
+    for (final v in textStyleVars)
       buffer.writeln('      $v: TextStyle.lerp($v, other.$v, t)!,');
-    }
-    for (final v in assetVars) {
+    for (final v in assetVars)
       buffer.writeln(
           '      $v: t < 0.5 ? $v : other.$v,'); // Discrete string toggle jump
-    }
     buffer.writeln('    );');
     buffer.writeln('  }');
     buffer.writeln('');
 
-    buffer.writeln('  static _\${className}Theme of(BuildContext context) =>');
+    buffer.writeln('  static _\$${className}Theme of(BuildContext context) =>');
     buffer
-        .writeln('      Theme.of(context).extension<_\${className}Theme>()!;');
+        .writeln('      Theme.of(context).extension<_\$${className}Theme>()!;');
     buffer.writeln('}');
     buffer.writeln('');
 
     // ── 2. Abstract base theme class (Appends extension safely after user configuration) ─────────────────
-    buffer.writeln('abstract class _\$\$$className {');
-    buffer.writeln('  _\$\$$className();');
+    buffer.writeln('abstract class _\$$className {');
+    buffer.writeln('  _\$$className();');
     buffer.writeln('');
     buffer.writeln('  /// Override to customize the light theme.');
     buffer.writeln('  ThemeData buildLightTheme(ThemeData theme) => theme;');
@@ -198,7 +161,7 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
     buffer.writeln('    final userTheme = buildLightTheme(baseTheme);');
     buffer.writeln('    return userTheme.copyWith(');
     buffer.writeln(
-        '      extensions: [...userTheme.extensions.values, _\${className}Theme.light()],');
+        '      extensions: [...userTheme.extensions.values, _\$${className}Theme.light()],');
     buffer.writeln('    );');
     buffer.writeln('  }');
     buffer.writeln('');
@@ -208,20 +171,20 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
     buffer.writeln('    final userTheme = buildDarkTheme(baseTheme);');
     buffer.writeln('    return userTheme.copyWith(');
     buffer.writeln(
-        '      extensions: [...userTheme.extensions.values, _\${className}Theme.dark()],');
+        '      extensions: [...userTheme.extensions.values, _\$${className}Theme.dark()],');
     buffer.writeln('    );');
     buffer.writeln('  }');
     buffer.writeln('}');
     buffer.writeln('');
 
     // ── 3. Public Standalone StatefulWidget (With Storage Adapter Injection) ──────────────────────────────
-    buffer.writeln('class \${className}Material extends StatefulWidget {');
+    buffer.writeln('class ${className}Material extends StatefulWidget {');
     buffer.writeln('  final ThemeMode initialMode;');
     buffer.writeln('  final BestThemeStorage? storage;');
     buffer.writeln(
         '  final Widget Function(BuildContext context, ThemeMode mode, ThemeData lightTheme, ThemeData darkTheme) builder;');
     buffer.writeln('');
-    buffer.writeln('  const \${className}Material({');
+    buffer.writeln('  const ${className}Material({');
     buffer.writeln('    super.key,');
     buffer.writeln('    required this.builder,');
     buffer.writeln('    this.initialMode = ThemeMode.system,');
@@ -229,26 +192,26 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
     buffer.writeln('  });');
     buffer.writeln('');
     buffer.writeln(
-        '  static _\${className}MaterialState of(BuildContext context) =>');
+        '  static _${className}MaterialState of(BuildContext context) =>');
     buffer.writeln(
-        '      context.findAncestorStateOfType<_\${className}MaterialState>()!;');
+        '      context.findAncestorStateOfType<_${className}MaterialState>()!;');
     buffer.writeln('');
     buffer.writeln('  @override');
     buffer.writeln(
-        '  State<\${className}Material> createState() => _\${className}MaterialState();');
+        '  State<${className}Material> createState() => _${className}MaterialState();');
     buffer.writeln('}');
     buffer.writeln('');
 
     // ── 4. State (Handles reading and writing asynchronously) ─────────────────────────────────────────
     buffer.writeln(
-        'class _\${className}MaterialState extends State<\${className}Material> {');
+        'class _${className}MaterialState extends State<${className}Material> {');
     buffer.writeln('  late ThemeMode _mode;');
-    buffer.writeln('  late final \$className _instance;');
+    buffer.writeln('  late final $className _instance;');
     buffer.writeln('');
     buffer.writeln('  @override');
     buffer.writeln('  void initState() {');
     buffer.writeln('    super.initState();');
-    buffer.writeln('    _instance = \$className();');
+    buffer.writeln('    _instance = $className();');
     buffer.writeln('    _mode = widget.initialMode;');
     buffer.writeln('    _loadPersistedTheme();');
     buffer.writeln('  }');
@@ -288,10 +251,10 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
     buffer.writeln('');
 
     // ── 5. BuildContext extension ─────────────────────────────────────────
-    // final extensionName = annotation.read('extensionName').stringValue;
-    buffer.writeln('extension \${className}ContextExtension on BuildContext {');
+    final extensionName = annotation.read('extensionName').stringValue;
+    buffer.writeln('extension ${className}ContextExtension on BuildContext {');
     buffer.writeln(
-        '  _\${className}Theme get \$extensionName => _\${className}Theme.of(this);');
+        '  _\$${className}Theme get $extensionName => _\$${className}Theme.of(this);');
     buffer.writeln(
         '  bool get isDark => Theme.of(this).brightness == Brightness.dark;');
     buffer.writeln(
@@ -300,13 +263,13 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
     buffer.writeln(
         '  Color get primaryScheme => Theme.of(this).colorScheme.primary;');
     buffer.writeln(
-        '  void toggleTheme() => \${className}Material.of(this).toggle();');
+        '  void toggleTheme() => ${className}Material.of(this).toggle();');
     buffer.writeln(
-        '  void setThemeMode(ThemeMode mode) => \${className}Material.of(this).setMode(mode);');
+        '  void setThemeMode(ThemeMode mode) => ${className}Material.of(this).setMode(mode);');
     buffer
-        .writeln('  void toDark() => \${className}Material.of(this).toDark();');
+        .writeln('  void toDark() => ${className}Material.of(this).toDark();');
     buffer.writeln(
-        '  void toLight() => \${className}Material.of(this).toLight();');
+        '  void toLight() => ${className}Material.of(this).toLight();');
     buffer.writeln('}');
 
     return buffer.toString();
