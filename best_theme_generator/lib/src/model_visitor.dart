@@ -1,20 +1,20 @@
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/visitor2.dart';
 
 class ModelVisitor extends SimpleElementVisitor2<void> {
   String className = '';
   // Store fields mapped to their actual element types for better analysis later
-  Map<String, FieldElement2> fields = {};
+  Map<String, FieldElement> fields = {};
 
   @override
-  void visitClassElement(ClassElement2 element) {
+  void visitClassElement(ClassElement element) {
     className = element.displayName;
     // Safely super-visit down to the class children (fields, methods, etc.)
     super.visitClassElement(element);
   }
 
   @override
-  void visitFieldElement(FieldElement2 element) {
+  void visitFieldElement(FieldElement element) {
     // Only capture static const fields (like your theme colors)
     if (element.isStatic && element.isConst) {
       fields[element.displayName] = element;

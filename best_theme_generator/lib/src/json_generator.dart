@@ -1,4 +1,4 @@
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:best_theme_annotation/best_theme_annotation.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
@@ -6,7 +6,7 @@ import 'package:source_gen/source_gen.dart';
 class BestGenerator extends GeneratorForAnnotation<BestTheme> {
   @override
   String generateForAnnotatedElement(
-    Element2 element,
+    Element element,
     ConstantReader annotation,
     BuildStep buildStep,
   ) {
@@ -28,9 +28,9 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
     final assetVars = <String>[];
 
     // Safely cast to ClassElement2 structure using generic fallbacks
-    final classElement = element as ClassElement2;
+    final classElement = element as ClassElement;
 
-    for (final field in classElement.fields2) {
+    for (final field in classElement.fields) {
       if (field.isStatic && field.isConst) {
         final typeStr = field.type.getDisplayString();
         if (typeStr.contains('BestColor')) {
@@ -72,26 +72,43 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
         'class _\${className}Theme extends ThemeExtension<_\${className}Theme> {');
 
     // Declare specific type properties matching tokens fields
-    for (final v in colorVars) buffer.writeln('  final Color $v;');
-    for (final v in textStyleVars) buffer.writeln('  final TextStyle $v;');
-    for (final v in assetVars) buffer.writeln('  final String $v;');
+    for (final v in colorVars) {
+      buffer.writeln('  final Color $v;');
+    }
+    for (final v in textStyleVars) {
+      buffer.writeln('  final TextStyle $v;');
+    }
+    for (final v in assetVars) {
+      buffer.writeln('  final String $v;');
+    }
     buffer.writeln('');
 
     // Typed constructor injection
     buffer.writeln('  const _\${className}Theme({');
-    for (final v in colorVars) buffer.writeln('    required this.$v,');
-    for (final v in textStyleVars) buffer.writeln('    required this.$v,');
-    for (final v in assetVars) buffer.writeln('    required this.$v,');
+    for (final v in colorVars) {
+      buffer.writeln('    required this.$v,');
+    }
+    for (final v in textStyleVars) {
+      buffer.writeln('    required this.$v,');
+    }
+    for (final v in assetVars) {
+      buffer.writeln('    required this.$v,');
+    }
     buffer.writeln('  });');
     buffer.writeln('');
 
     // Light theme factory mapping directly to compile-time configuration fields
     buffer.writeln('  factory _\${className}Theme.light() {');
     buffer.writeln('    return _\${className}Theme(');
-    for (final v in colorVars) buffer.writeln('      $v: $className.$v.light,');
-    for (final v in textStyleVars)
+    for (final v in colorVars) {
       buffer.writeln('      $v: $className.$v.light,');
-    for (final v in assetVars) buffer.writeln('      $v: $className.$v.light,');
+    }
+    for (final v in textStyleVars) {
+      buffer.writeln('      $v: $className.$v.light,');
+    }
+    for (final v in assetVars) {
+      buffer.writeln('      $v: $className.$v.light,');
+    }
     buffer.writeln('    );');
     buffer.writeln('  }');
     buffer.writeln('');
@@ -99,10 +116,15 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
     // Dark theme factory mapping directly to compile-time configuration fields
     buffer.writeln('  factory _\${className}Theme.dark() {');
     buffer.writeln('    return _\${className}Theme(');
-    for (final v in colorVars) buffer.writeln('      $v: $className.$v.dark,');
-    for (final v in textStyleVars)
+    for (final v in colorVars) {
       buffer.writeln('      $v: $className.$v.dark,');
-    for (final v in assetVars) buffer.writeln('      $v: $className.$v.dark,');
+    }
+    for (final v in textStyleVars) {
+      buffer.writeln('      $v: $className.$v.dark,');
+    }
+    for (final v in assetVars) {
+      buffer.writeln('      $v: $className.$v.dark,');
+    }
     buffer.writeln('    );');
     buffer.writeln('  }');
     buffer.writeln('');
@@ -110,14 +132,26 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
     // Type safe CopyWith signature
     buffer.writeln('  @override');
     buffer.writeln('  _\${className}Theme copyWith({');
-    for (final v in colorVars) buffer.writeln('    Color? $v,');
-    for (final v in textStyleVars) buffer.writeln('    TextStyle? $v,');
-    for (final v in assetVars) buffer.writeln('    String? $v,');
+    for (final v in colorVars) {
+      buffer.writeln('    Color? $v,');
+    }
+    for (final v in textStyleVars) {
+      buffer.writeln('    TextStyle? $v,');
+    }
+    for (final v in assetVars) {
+      buffer.writeln('    String? $v,');
+    }
     buffer.writeln('  }) {');
     buffer.writeln('    return _\${className}Theme(');
-    for (final v in colorVars) buffer.writeln('      $v: $v ?? this.$v,');
-    for (final v in textStyleVars) buffer.writeln('      $v: $v ?? this.$v,');
-    for (final v in assetVars) buffer.writeln('      $v: $v ?? this.$v,');
+    for (final v in colorVars) {
+      buffer.writeln('      $v: $v ?? this.$v,');
+    }
+    for (final v in textStyleVars) {
+      buffer.writeln('      $v: $v ?? this.$v,');
+    }
+    for (final v in assetVars) {
+      buffer.writeln('      $v: $v ?? this.$v,');
+    }
     buffer.writeln('    );');
     buffer.writeln('  }');
     buffer.writeln('');
@@ -128,13 +162,16 @@ class BestGenerator extends GeneratorForAnnotation<BestTheme> {
         '  _\${className}Theme lerp(ThemeExtension<_\${className}Theme>? other, double t) {');
     buffer.writeln('    if (other is! _\text{className}Theme) return this;');
     buffer.writeln('    return _\${className}Theme(');
-    for (final v in colorVars)
+    for (final v in colorVars) {
       buffer.writeln('      $v: Color.lerp($v, other.$v, t)!,');
-    for (final v in textStyleVars)
+    }
+    for (final v in textStyleVars) {
       buffer.writeln('      $v: TextStyle.lerp($v, other.$v, t)!,');
-    for (final v in assetVars)
+    }
+    for (final v in assetVars) {
       buffer.writeln(
           '      $v: t < 0.5 ? $v : other.$v,'); // Discrete string toggle jump
+    }
     buffer.writeln('    );');
     buffer.writeln('  }');
     buffer.writeln('');
