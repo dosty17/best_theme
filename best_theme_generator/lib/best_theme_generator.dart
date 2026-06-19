@@ -1,4 +1,4 @@
-library best_theme_generator;
+library;
 
 import 'package:build/build.dart';
 import 'package:best_theme_generator/src/json_generator.dart';

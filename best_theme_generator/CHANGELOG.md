@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0.2] - 2026-06-19
+
+### Fixed
+
+- Restored compatibility with analyzer versions that still expose `element2.dart`.
+- Prevented Pub from resolving analyzer 12+, which removes the APIs used by this generator.
+
 ## [3.0.1] - 2026-06-19
 
 ### Fixed

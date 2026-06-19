@@ -36,24 +36,27 @@ packages:
   best_theme:
     dependency: "direct main"
     description:
-      path: ".."
-      relative: true
-    source: path
-    version: "2.0.0"
+      name: best_theme
+      sha256: "4ef24a341683fc3348d748fea47638dd72eb4f36d9ef31bdb44aa67121d5b448"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   best_theme_annotation:
     dependency: "direct main"
     description:
-      path: "../../best_theme_annotation"
-      relative: true
-    source: path
-    version: "1.0.0"
+      name: best_theme_annotation
+      sha256: bdda98886ff63e5e0ac4524ade3c6ef4fddb2f5d96cbc55f5f3ca48a60dd7a63
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   best_theme_generator:
     dependency: "direct dev"
     description:
-      path: "../../best_theme_generator"
-      relative: true
-    source: path
-    version: "2.0.0"
+      name: best_theme_generator
+      sha256: "649ea6f576ab08d0656d6f0714162a4c2928fb63bc8cd9adc3521f66bdccc8bb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.1"
   boolean_selector:
     dependency: transitive
     description:
