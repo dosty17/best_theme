@@ -2,6 +2,60 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.0] - 2026-06-19
+
+### Breaking Changes
+
+- Removed the `vars` parameter from the `@BestTheme` annotation.
+- The generator now automatically discovers theme tokens using compile-time static field analysis.
+- Manual variable registration is no longer required.
+
+### Added
+
+- Support for automatic generation of:
+  - `BestColor`
+  - `BestTextStyle`
+  - `BestAsset`
+
+- Improved compile-time performance.
+- Cleaner and more maintainable theme definitions.
+- Stronger type safety through static token discovery.
+
+### Migration Guide
+
+Remove the `vars` parameter from your annotation and define your theme tokens as `static const` fields inside the theme class.
+
+#### Old (v1.x.x)
+
+```dart
+@BestTheme(
+  vars: ['primary', 'card'],
+  extensionName: 'myColors',
+)
+class MyTheme extends _$MyTheme {}
+```
+
+#### New (v2.0.0)
+
+```dart
+@BestTheme(
+  extensionName: 'myColors',
+)
+class MyTheme extends _$MyTheme {
+  static const primary = BestColor(
+    light: Colors.blue,
+    dark: Colors.indigo,
+  );
+
+  static const card = BestColor(
+    light: Colors.white,
+    dark: Colors.black,
+  );
+}
+```
+
+---
+
 ## [1.0.0] - 2026-03-06
 
 ### Added

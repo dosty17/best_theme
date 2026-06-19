@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0.0] - 2026-06-19
+
+### Breaking Changes
+
+- **Static Field Code Generation**: The generator now completely scans for `static const` fields inside your class.
+- **Removed `vars` from Annotation**: You no longer need to pass a string list of variables to `@BestTheme(vars: [...])`.
+- **Factory Signature Change**: Generated `ThemeExtension` factories (`.light()` and `.dark()`) no longer accept a runtime `List<BestColor>`, switching entirely to zero-argument compile-time constant references.
+
+### Added
+
+- **`BestTextStyle` Typography Tokens**: Added native support for handling custom light/dark text style transitions seamlessly.
+- **`BestAsset` Variation Tokens**: Added native support for tracking dynamic light/dark image asset paths straight through the context layer.
+- **Built-In Theme Mode Persistence**: Added an optional `storage` property via the `BestThemeStorage` abstract class interface to handle automated local caching (e.g., via `shared_preferences`) out of the box.
+- **Worry-Free Overrides**: The code generator now automatically appends package theme extensions _after_ custom user layout overrides (`buildLightTheme` / `buildDarkTheme`), preventing accidental data layer loss.
+
+### Migration Guide
+
+If you are updating from **v2.x to v3.x**, update your declaration file:
+
+**Old (v2.0.0):**
+
+```dart
+@BestTheme(vars: ['color1', 'color2'], extensionName: 'myColors')
+class MyTheme extends _$MyTheme {
+  MyTheme() : super(myColors: dataColor);
+}
+
 ## [2.0.0] - 2026-03-06
 
 ### Breaking Changes
@@ -113,3 +140,4 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - N/A (First release)
+```

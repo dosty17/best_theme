@@ -1,8 +1,10 @@
 class BestTheme {
-  final List vars;
+  /// The name of the getter extension on [BuildContext].
+  /// Defaults to 'bestTheme' if not provided (e.g., context.bestTheme).
   final String extensionName;
-  const BestTheme({this.vars = const [], this.extensionName = 'bestTheme'});
+
+  const BestTheme({this.extensionName = 'bestTheme'});
 }
 
-// This variable will used as annotation to generate the code
+/// Global shorthand annotation instance with default parameters.
 const bestTheme = BestTheme();

@@ -2,6 +2,82 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0.0] - 2026-06-19
+
+### Breaking Changes
+
+- Migrated the code generation engine to parse theme tokens directly from `static const` class fields.
+- Removed the legacy annotation-driven variable collection mechanism.
+- Removed internal runtime parameter maps and array-based token registration.
+- Eliminated factory constructors that relied on dynamic token arrays.
+- Reduced runtime allocations and removed lookup-related null reference issues.
+
+### Added
+
+- Automatic detection and generation of:
+  - `BestColor`
+  - `BestTextStyle`
+  - `BestAsset`
+
+- Multi-token grouping support for colors, typography, and assets.
+- Asynchronous storage lifecycle support through `BestThemeStorage`.
+- Automatic theme mode persistence integration.
+- Improved generated state management architecture.
+- Safe extension bundling after custom theme overrides.
+- Generated extensions are now appended after `buildLightTheme()` and `buildDarkTheme()` execution, preventing accidental loss of generated theme extensions.
+- Improved compile-time performance and code generation reliability.
+
+### Fixed
+
+- Full compatibility with Analyzer 6.x and 7.x.
+- Fixed AST scanning issues caused by analyzer API changes.
+- Fixed build failures related to the `fields2` architecture migration.
+- Improved generator stability across newer Dart SDK versions.
+
+### Migration Guide
+
+#### Old (v2.x.x)
+
+```dart
+final colors = [
+  BestColor(
+    name: 'primary',
+    light: Colors.blue,
+    dark: Colors.indigo,
+  ),
+];
+
+class MyTheme extends _$MyTheme {
+  MyTheme() : super(myColors: colors);
+}
+```
+
+#### New (v3.0.0)
+
+```dart
+@BestTheme(
+  extensionName: 'appTheme',
+)
+class MyTheme extends _$MyTheme {
+  static const primary = BestColor(
+    light: Colors.blue,
+    dark: Colors.indigo,
+  );
+
+  static const titleLarge = BestTextStyle(
+    light: TextStyle(fontSize: 24),
+    dark: TextStyle(fontSize: 24),
+  );
+
+  static const appLogo = BestAsset(
+    light: 'assets/logo_light.png',
+    dark: 'assets/logo_dark.png',
+  );
+}
+```
+
+---
+
 ## [2.0.0] - 2026-03-06
 
 ### Breaking Changes

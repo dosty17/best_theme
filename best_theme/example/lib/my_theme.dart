@@ -1,35 +1,27 @@
-// ignore_for_file: unused_field, prefer_typing_uninitialized_variables, prefer_final_fields
-
-// import 'package:best_theme/best_theme.dart';
-// import 'package:best_theme_annotation/best_theme_annotation.dart';
 import 'package:best_theme/best_theme.dart';
 import 'package:best_theme_annotation/best_theme_annotation.dart';
 import 'package:flutter/material.dart';
+
 part 'my_theme.g.dart';
 
-List<BestColor> dataColor = [
-  const BestColor(name: 'color1', light: Colors.white, dark: Colors.black),
-  const BestColor(name: 'color2', light: Colors.black, dark: Colors.white),
-  const BestColor(name: 'color3', light: Colors.amber, dark: Colors.red),
-  const BestColor(name: 'color4', light: Colors.amber, dark: Colors.red),
-  const BestColor(name: 'grey23', light: Colors.grey, dark: Colors.blueGrey),
-  const BestColor(
-      name: 'grey3', light: Colors.grey, dark: Color.fromARGB(255, 3, 43, 63)),
-];
+@BestTheme(extensionName: 'myColors')
+class MyTheme extends _$MyTheme {
+  static const color1 = BestColor(light: Colors.white, dark: Colors.black);
+  static const color2 = BestColor(light: Colors.black, dark: Colors.white);
+  static const color3 = BestColor(light: Colors.amber, dark: Colors.red);
+  static const grey23 = BestColor(light: Colors.grey, dark: Colors.blueGrey);
 
-@BestTheme(vars: [
-  'color1',
-  'color2',
-  'color3',
-  'color4',
-  'grey23',
-  'grey3',
-], extensionName: 'myColors')
-class Mytheme extends _$Mytheme {
-  Mytheme() : super(myColors: dataColor);
-  @override
-  ThemeData buildDarkTheme(ThemeData theme) {
-    // TODO: implement buildDarkTheme
-    return super.buildDarkTheme(theme);
-  }
+  // 2. Text Styles
+  static const titleLarge = BestTextStyle(
+    light: TextStyle(
+        fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
+    dark: TextStyle(
+        fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+  );
+
+  // 3. Assets
+  static const appLogo = BestAsset(
+    light: 'assets/images/logo_light.png',
+    dark: 'assets/images/logo_dark.png',
+  );
 }

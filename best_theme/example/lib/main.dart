@@ -1,6 +1,8 @@
 import 'package:example/my_theme.dart';
 import 'package:flutter/material.dart';
 
+import 'package:best_theme/best_theme.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -9,14 +11,17 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MythemeBestThemeMaterial(
+    return MyThemeMaterial(
         initialMode: ThemeMode.dark,
+        // storage: SharedPrefThemeStorage(),
         builder: (context, mode, lightTheme, darkTheme) => MaterialApp(
               title: 'Flutter Demo',
               themeMode: mode,
               theme: lightTheme,
               darkTheme: darkTheme,
-              home: const MyHomePage(title: 'Flutter Demo Home Page'),
+              home: Builder(builder: (context) {
+                return const MyHomePage(title: 'Flutter Demo Home Page');
+              }),
             ));
   }
 }
@@ -76,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Container(
               width: 100,
               height: 100,
-              decoration: BoxDecoration(color: context.myColors.grey3),
+              decoration: BoxDecoration(color: context.myColors.color1),
               child: const Text('example'),
             )
           ],
@@ -89,5 +94,25 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+}
+
+class SharedPrefThemeStorage implements BestThemeStorage {
+  static const _key = 'theme_mode_index';
+
+  @override
+  Future<ThemeMode?> loadThemeMode() async {
+    // final prefs = await SharedPreferences.getInstance();
+    // final index = prefs.getInt(_key);
+    // if (index != null && index >= 0 && index < ThemeMode.values.length) {
+    //   return ThemeMode.values[index];
+    // }
+    return null;
+  }
+
+  @override
+  Future<void> saveThemeMode(ThemeMode mode) async {
+    // final prefs = await SharedPreferences.getInstance();
+    // await prefs.setInt(_key, mode.index);
   }
 }

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 /// Represents a theme color with light and dark variations.
 class BestColor {
   /// The name of the color.
-  final String name;
 
   /// The light variant of the color.
   final Color light;
@@ -13,7 +12,6 @@ class BestColor {
 
   /// Creates a [BestColor] with specified light and dark colors.
   const BestColor({
-    required this.name,
     required this.light,
     required this.dark,
   });
