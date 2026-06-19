@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0.1] - 2026-06-19
+
+### Fixed
+
+-A bug fixed
+
 ## [3.0.0] - 2026-06-19
 
 ### Breaking Changes

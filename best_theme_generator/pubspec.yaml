@@ -1,6 +1,6 @@
 name: best_theme_generator
 description: "A code generation package for creating theme color variables in Flutter."
-version: 3.0.0
+version: 3.0.1
 homepage: https://github.com/dosty17/best_theme/tree/main/best_theme_generator
 # publish_to: none
 
@@ -13,18 +13,19 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  build: ">=3.0.0 <8.0.0"
-  source_gen: ">=3.0.0 <8.0.0"
   # best_theme:
   #   path: ../best_theme/
   # best_theme_annotation:
   #   path: ../best_theme_annotation/
   best_theme: ^3.0.0
   best_theme_annotation: ^2.0.0
-  analyzer: ">=7.0.0 <20.0.0"
+
+  build: ">=2.4.0 <5.0.0"
+  source_gen: ">=1.4.0 <5.0.0"
+  analyzer: ">=6.5.0 <15.0.0"
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
-  build_runner: ">=2.1.7 <5.0.0"
+  build_runner: ">=2.4.0 <3.0.0"
